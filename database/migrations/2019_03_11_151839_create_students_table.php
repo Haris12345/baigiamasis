@@ -17,9 +17,15 @@ class CreateStudentsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('last_name');
+            $table->integer('identity_code');
             $table->string('email');
-            $table->integer('study_program_id');
+            $table->string('status');
+            $table->string('group');
             $table->integer('course');
+            $table->integer('semester');
+            $table->string('studies_form');
+            $table->string('studies_program_code');
+            $table->integer('year');
             $table->timestamps();
         });
     }

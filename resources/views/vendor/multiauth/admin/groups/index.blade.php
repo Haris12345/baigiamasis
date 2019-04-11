@@ -15,63 +15,38 @@
                             <p>Nėra pridėta jokių grupių</p>
                         @else
                         @include('multiauth::message')
-                        <table class="table table-responsive(xl)">
-                            <tr>
-                                <th>Grupės trumpinimas</th>
-                                <th>Studijų programa</th>
-                                <th>Studijų forma</th>
-                                <th>Studentų kiekis</th>
-                                <th>Veiksmai</th>
-                            </tr>
-                            @foreach($groups as $group)
-                            <tr>
-                                <td>{{$group->group_name}}</td>
-                                <td>{{$group->studies_program}}</td>
-                                <td>{{$group->studies_form}}</td>
-                                <td>{{$group->students}}</td>
-                                <td>
-                                <!--<button type="submit" class="btn btn-sm btn-danger" onCLick="perspejimas()">Ištrinti</button>-->
-                                <a href="{{route('admin.students', $group->id)}}" class="btn btn-sm btn-primary">Peržiūrėti</a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </table>
-                        {{$groups->links()}}
+                        @foreach($groups_ft as $ft)
+                            @if(isset($ft->studies_form))
+                                <div class="list-group">
+                                    <a href="{{route('admin.students.group', $ft->group_name)}}" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">{{$ft->studies_program_name}}</h5>
+                                            <small>{{$ft->studies_form}}</small>
+                                        </div>
+                                        <p class="mb-1">Grupė: {{$ft->group_name}} Studentai: {{$ft->students}}</p>
+                                    </a>
+                                </div>
+                            @endif
+                        @endforeach
+                        
+                        @foreach($groups_ex as $ex)
+                            @if(isset($ex->studies_form))
+                                <div class="list-group">
+                                    <a href="{{route('admin.students.group', $ex->group_name)}}" class="list-group-item list-group-item-action">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">{{$ex->studies_program_name}}</h5>
+                                            <small>{{$ex->studies_form}}</small>
+                                        </div>
+                                        <p class="mb-1">Grupė: {{$ex->group_name}} Studentai: {{$ex->students}}</p>
+                                    </a>
+                                </div>
+                            @endif
+                        @endforeach
+                        {{-- NEEDS PAGINATE --}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-    {{-- <script>
-        function perspejimas(){
-            $('#modal').modal('show');
-        }
-    </script>
-   
-   <div id="modal" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">ĮSPĖJIMAS!</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-                    Trinant šią studijų programą bus panaikinti visi su ja susieti studentai. Ar tikrai norite trinti?
-            </div>
-            <div class="modal-footer">
-            <form method="POST" action="{{route('admin.studies.delete', $stud->id)}}">
-                @csrf
-                @method('DELETE')
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Atšaukti</button>
-                <button type="submit" class="btn btn-danger">Vistiek trinti</button>
-            </form> --}}
-            @endif   
-            </div>
-          </div>
-        </div>
-      </div>
-
+@endif             
 @endsection

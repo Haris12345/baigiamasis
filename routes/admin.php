@@ -39,15 +39,16 @@
 
     //Students
     Route::GET('/students', 'StudentsController@index')->name('admin.students');
-    Route::GET('/students/new', 'StudentsController@new')->name('admin.students.new');
+    Route::GET('/students/{group}', 'StudentsController@get')->name('admin.students.group');
+    Route::GET('/students/new/{group}', 'StudentsController@new')->name('admin.students.new');
     Route::GET('/students/show/{id}', 'StudentsController@show')->name('admin.students.show');
     Route::POST('/students/new', 'StudentsController@create')->name('admin.students.create');
-    Route::GET('students/edit/{id}', 'StudentsController@edit')->name('admin.students.edit');
-    Route::POST('students/show{id}', 'StudentsController@update')->name('admin.students.update');
+    Route::GET('/students/edit/{id}', 'StudentsController@edit')->name('admin.students.edit');
+    Route::POST('/students/show{id}', 'StudentsController@update')->name('admin.students.update');
     Route::DELETE('/students/{id}', 'StudentsController@delete')->name('admin.students.delete');
     Route::GET('/students/account/{id}', 'StudentsController@account')->name('admin.students.account');
-    Route::POST('students/account{id}', 'StudentsController@newAccount')->name('admin.students.account.new');
-    Route::POST('students/account/generate', 'StudentsController@generate')->name('admin.students.account.generate');
+    Route::POST('/students/account{id}', 'StudentsController@newAccount')->name('admin.students.account.new');
+    Route::POST('/students/account/generate', 'StudentsController@generate')->name('admin.students.account.generate');
 
     //Studies
     // Route::GET('/studies', 'StudiesController@index')->name('admin.studies');
@@ -65,8 +66,15 @@
     Route::GET('/studies/upload', 'StudyPlansController@upload')->name('admin.studies.upload');
     Route::POST('/studies/subjects', 'StudyPlansController@import')->name('admin.studies.import');
     Route::POST('/studies/semesters', 'SemestersController@import')->name('admin.studies.importSemesters');
-    Route::GET('/studies/show/{studies_program_code}', 'StudyPlansController@show')->name('admin.studies.show');
+    Route::GET('/studies/show/{studies_program_code}/{studies_form}', 'StudyPlansController@show')->name('admin.studies.show');
+
+    // Settlements
+    Route::GET('/settlements', 'SettlementsController@index')->name('admin.settlements');
     
+    // Individual evaluations
+    Route::GET('/individual-evaluation/{id}', 'EvaluationController@index')->name('admin.students.individual-evaluation');
+    Route::GET('/individual-evaluation/{id}/smester/{semester}', 'EvaluationController@show')->name('admin.students.individual-evaluation.semester');
+
     // should consider changing route links for Create Post methods
 
     Route::fallback(function () {

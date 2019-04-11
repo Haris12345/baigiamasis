@@ -17,15 +17,16 @@
                             @csrf
                             
                             <div class="form-group row">
-                                <label for="studies_form" class="col-md-4 col-form-label text-md-right">{{ __('Studijų forma') }}</label>
+                                <label for="studies_form" class="col-md-4 col-form-label text-md-right">{{ __('Studijų planas') }}</label>
     
                                 <div class="col-md-6">
-                                    <select class="form-control" name="studies_form">
+                                    <select class="form-control" name="studies_plan">
                                         <option>Pasirinkite studijų planą</option>
-                                        @foreach ($studies_program[0] as $group)
-                                            <option><?php var_dump($group); ?></option>
-                                            {{-- <input type="hidden" name="code" value="{{$group}}">
-                                            <option>{{$group}}</option> --}}
+                                        @foreach ($studies_program_ft as $ft)
+                                            <option value="{{$ft->studies_program_code}}nl"> {{$ft->studies_program_name}} {{$ft->studies_form}}</option> 
+                                        @endforeach
+                                        @foreach ($studies_program_ex as $ex)
+                                            <option value="{{$ex->studies_program_code}}ii"> {{$ex->studies_program_name}} {{$ex->studies_form}}</option>
                                         @endforeach
                                     </select>
                                 </div>

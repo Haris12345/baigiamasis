@@ -12,13 +12,17 @@
                 </div>
                 <div class="card-body">
                     @include('multiauth::message')
-                    <h3>Studentas: {{$student[0]->name}} {{$student[0]->last_name}}</h3>
-                    <p>Studiju programa: {{$student[0]->study_program}}</p>
-                    <p>Studiju forma {{$student[0]->study_form}}</p>
-                    <p>Kursas: {{$student[0]->course}}</p>
-                    <p>El. paštas: {{$student[0]->email}}</p>
-                    <a href="{{route('admin.students')}}" class="btn btn-secondary">Atgal</a>
-                    <span class="float-right"><a href="{{route('admin.students.edit', $student[0]->id)}}" class="btn btn-success">Keisti</a></span>
+                    <h3>Studentas: {{$student->name}} {{$student->last_name}}</h3>
+                    <p>Asmens kodas: {{$student->identity_code}}</p>
+                    <p>Grupė: {{$student->group}}</p>
+                    <p>Studiju forma {{$student->studies_form}}</p>
+                    <p>Semestras: {{$student->semester}}</p>
+                    <p>Kursas: {{$student->course}}</p>
+                    <p>El. paštas: {{$student->email}}</p>
+                    <p>Statusas: {{$student->status}}</p>
+                    <p>Grupės sukūrimo metai: {{$student->year}}</p>
+                    <a href="{{route('admin.students.group', $student->group)}}" class="btn btn-secondary">Atgal</a>
+                    <span class="float-right"><a href="{{route('admin.students.edit', $student->id)}}" class="btn btn-success">Keisti</a></span>
                 </div>
             </div>
         </div>

@@ -12,44 +12,85 @@
                     </div>
                     <div class="card-body">
                         @include('multiauth::message')
+                        @if($studies_form == 'Nuolatinė')
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Dalyko pavadinimas</th>
+                                    <th colspan="2">1 Semestras</th>
+                                    <th colspan="2">2 Semestras</th>
+                                    <th colspan="2">3 Semestras</th>
+                                    <th colspan="2">4 Semestras</th>
+                                    <th colspan="2">5 Semestras</th>
+                                    <th colspan="2">6 Semestras</th>
+                                    <th scope="col">ECTS kreditai</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($study_plans as $study_plan)
+                                        <tr>
+                                            <td>{{$study_plan->subject_name}}</td>
+                                            <td>{{$study_plan->credits_sem1}}</td>
+                                            <td>{{$study_plan->evaluation_type_sem1}}</td>
+                                            <td>{{$study_plan->credits_sem2}}</td>
+                                            <td>{{$study_plan->evaluation_type_sem2}}</td>
+                                            <td>{{$study_plan->credits_sem3}}</td>
+                                            <td>{{$study_plan->evaluation_type_sem3}}</td>
+                                            <td>{{$study_plan->credits_sem4}}</td>
+                                            <td>{{$study_plan->evaluation_type_sem4}}</td>
+                                            <td>{{$study_plan->credits_sem5}}</td>
+                                            <td>{{$study_plan->evaluation_type_sem5}}</td>
+                                            <td>{{$study_plan->credits_sem6}}</td>
+                                            <td>{{$study_plan->evaluation_type_sem6}}</td>
+                                            <td>{{$study_plan->ECTS_credits}}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endif
+                        
+                        @if($studies_form == 'Ištestinė')
                         <table class="table table-sm table-bordered">
-                            <thead>
-                            <tr>
-                                <th scope="col">Dalyko pavadinimas</th>
-                                <th scope="col">Dalyko kodas</th>
-                                <th scope="col">Dalyko statusas</th>
-                                <th colspan="2">1 Semestras</th>
-                                <th colspan="2">2 Semestras</th>
-                                <th colspan="2">3 Semestras</th>
-                                <th colspan="2">4 Semestras</th>
-                                <th colspan="2">5 Semestras</th>
-                                <th colspan="2">6 Semestras</th>
-                                <th scope="col">ECTS kreditai</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($study_plans as $study_plan)
-                                    <tr>
-                                        <td>{{$study_plan->subject_name}}</td>
-                                        <td>{{$study_plan->subject_code}}</td>
-                                        <td>{{$study_plan->subject_status}}</td>
-                                        <td>{{$study_plan->credits_sem1}}</td>
-                                        <td>{{$study_plan->evaluation_type_sem1}}</td>
-                                        <td>{{$study_plan->credits_sem2}}</td>
-                                        <td>{{$study_plan->evaluation_type_sem2}}</td>
-                                        <td>{{$study_plan->credits_sem3}}</td>
-                                        <td>{{$study_plan->evaluation_type_sem3}}</td>
-                                        <td>{{$study_plan->credits_sem4}}</td>
-                                        <td>{{$study_plan->evaluation_type_sem4}}</td>
-                                        <td>{{$study_plan->credits_sem5}}</td>
-                                        <td>{{$study_plan->evaluation_type_sem5}}</td>
-                                        <td>{{$study_plan->credits_sem6}}</td>
-                                        <td>{{$study_plan->evaluation_type_sem6}}</td>
-                                        <td>{{$study_plan->ECTS_credits}}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                <thead>
+                                <tr>
+                                    <th scope="col">Dalyko pavadinimas</th>
+                                    <th colspan="2">1 Semestras</th>
+                                    <th colspan="2">2 Semestras</th>
+                                    <th colspan="2">3 Semestras</th>
+                                    <th colspan="2">4 Semestras</th>
+                                    <th colspan="2">5 Semestras</th>
+                                    <th colspan="2">6 Semestras</th>
+                                    <th colspan="2">7 Semestras</th>
+                                    <th colspan="2">8 Semestras</th>
+                                    <th scope="col">ECTS kreditai</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($study_plans as $study_plan)
+                                        <tr>
+                                            <td>{{$study_plan->subject_name}}</td>
+                                            <td>{{$study_plan->credits_sem1}}</td>
+                                            <td>{{$study_plan->evaluation_type_sem1}}</td>
+                                            <td>{{$study_plan->credits_sem2}}</td>
+                                            <td>{{$study_plan->evaluation_type_sem2}}</td>
+                                            <td>{{$study_plan->credits_sem3}}</td>
+                                            <td>{{$study_plan->evaluation_type_sem3}}</td>
+                                            <td>{{$study_plan->credits_sem4}}</td>
+                                            <td>{{$study_plan->evaluation_type_sem4}}</td>
+                                            <td>{{$study_plan->credits_sem5}}</td>
+                                            <td>{{$study_plan->evaluation_type_sem5}}</td>
+                                            <td>{{$study_plan->credits_sem6}}</td>
+                                            <td>{{$study_plan->evaluation_type_sem6}}</td>
+                                            <td>{{$study_plan->credits_sem7}}</td>
+                                            <td>{{$study_plan->evaluation_type_sem7}}</td>
+                                            <td>{{$study_plan->credits_sem8}}</td>
+                                            <td>{{$study_plan->evaluation_type_sem8}}</td>
+                                            <td>{{$study_plan->ECTS_credits}}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @endif
                     </div>
                 </div>
             </div>

@@ -18,6 +18,7 @@ class CreateGroupsTable extends Migration
             $table->string('studies_program_code');
             $table->string('group_name');
             $table->integer('students');
+            $table->string('studies_form');
             $table->integer('year');
             $table->timestamps();
         });

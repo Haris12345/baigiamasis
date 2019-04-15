@@ -106,7 +106,7 @@ class StudyPlansController extends Controller
             }
         }
         else{
-            return redirect()->route('admin.upload');
+            return redirect()->route('admin.studies.upload');
         }
     
         return redirect()->route('admin.studies')->with('message', 'Studijų planas pridėtas');

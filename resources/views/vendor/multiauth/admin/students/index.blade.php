@@ -5,8 +5,11 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    Studentų sąrašas
+                    {{$group}} Studentų sąrašas
                     <span class="float-right">
+                        @if(isset($group))
+                            <a href="{{route('admin.settlements', $group) }}" class="btn btn-sm btn-primary">Grupės atsiskaitymai</a>
+                        @endif
                         <a href="{{route('admin.students.new', $group)}}" class="btn btn-sm btn-success">Naujas studentas</a>
                     </span>
                 </div>
@@ -32,13 +35,9 @@
                                 <td>{{$student->email}}</td>
                                 <td>{{$student->status}}</td>
                                 <td>
-                                    <form method="POST" action="{{route('admin.students.delete', $student->id)}}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <a href="{{route('admin.students.account', $student->id)}}" class="btn btn-sm btn-primary">Paskyra</a>
-                                        <a href="{{route('admin.students.show', $student->id)}}" class="btn btn-sm btn-primary">Informacija</a>
-                                        <a href="{{route('admin.students.individual-evaluation', $student->id)}}" class="btn btn-sm btn-primary">Pažangumas</a>
-                                    </form>
+                                    <a href="{{route('admin.students.account', $student->id)}}" class="btn btn-sm btn-primary">Paskyra</a>
+                                    <a href="{{route('admin.students.show', $student->id)}}" class="btn btn-sm btn-primary">Informacija</a>
+                                    <a href="{{route('admin.students.individual-evaluation', [$group, $student->id])}}" class="btn btn-sm btn-primary">Pažangumas</a>
                                 </td>
                             </tr>
                             @endforeach

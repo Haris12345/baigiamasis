@@ -56,8 +56,10 @@
                                 @admin('super')
                                     <a class="dropdown-item" href="{{ route('admin.show') }}">Administratorių sąrašas</a>
                                     <a class="dropdown-item" href="{{ route('admin.students') }}">Studentų sąrašas</a>
-                                    <a class="dropdown-item" href="{{ route('admin.studies') }}">Studijų programos</a>
-                                    <a class="dropdown-item" href="{{ route('admin.roles') }}">Rolės</a>
+                                    <a class="dropdown-item" href="{{ route('admin.teachers') }}">Dėstytojų sąrašas</a>
+                                    <a class="dropdown-item" href="{{ route('admin.groups') }}">Grupės</a>
+                                    <a class="dropdown-item" href="{{ route('admin.studies') }}">Studijų planai</a>                                    
+                                    <a class="dropdown-item" href="{{ route('admin.roles') }}">Vartotojai</a>
                                 @endadmin
                                     <a class="dropdown-item" href="{{ route('admin.password.change') }}">Keisti slaptažodį</a>
                                 <a class="dropdown-item" href="/admin/logout" onclick="event.preventDefault();

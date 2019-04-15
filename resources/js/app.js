@@ -22,6 +22,7 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('generate-password', require('./components/generatePassword').default);
+Vue.component('select-teacher', require('./components/selectTeacher').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

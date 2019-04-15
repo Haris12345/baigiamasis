@@ -26,7 +26,7 @@
                                             <option value="{{$ft->studies_program_code}}nl"> {{$ft->studies_program_name}} {{$ft->studies_form}}</option> 
                                         @endforeach
                                         @foreach ($studies_program_ex as $ex)
-                                            <option value="{{$ex->studies_program_code}}ii"> {{$ex->studies_program_name}} {{$ex->studies_form}}</option>
+                                            <option value="{{$ex->studies_program_code}}i"> {{$ex->studies_program_name}} {{$ex->studies_form}}</option>
                                         @endforeach
                                     </select>
                                 </div>

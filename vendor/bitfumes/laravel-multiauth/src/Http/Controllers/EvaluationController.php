@@ -21,7 +21,7 @@ class EvaluationController extends Controller
         $this->middleware('role:super', ['only'=>'show']);
     }
     
-    public function index($id){
+    public function index($group, $id){
         $student = DB::table('students')
         ->where('id', '=', $id)
         ->first();
@@ -37,14 +37,14 @@ class EvaluationController extends Controller
             ->get();
         }
        
-        return view('multiauth::admin.students.individual-evaluation.index', compact('id', 'semesters', 'student'));
+        return view('multiauth::admin.students.individual-evaluation.index', compact('group', 'id', 'semesters', 'student'));
     }
 
-    public function show($id, $semester){
+    public function show($group, $id, $semester){
         $student = DB::table('students')
         ->where('id', '=', $id)
         ->first();
 
-        return view('multiauth::admin.students.individual-evaluation.semester', compact('id', 'semester', 'student'));
+        return view('multiauth::admin.students.individual-evaluation.semester', compact('group', 'id', 'semester', 'student'));
     }
 }

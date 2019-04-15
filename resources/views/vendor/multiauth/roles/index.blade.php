@@ -5,9 +5,9 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header bg-info text-white">
-                    Rolės
+                    Vartotojai
                     <span class="float-right">
-                        <a href="{{ route('admin.role.create') }}" class="btn btn-sm btn-success">Nauja rolė</a>
+                        <a href="{{ route('admin.role.create') }}" class="btn btn-sm btn-success">Naujas vartotojas</a>
                     </span>
                 </div>
 
@@ -24,7 +24,7 @@
                                     @csrf @method('delete')
                                 </form>
 
-                                <a href="{{ route('admin.role.edit',$role->id) }}" class="btn btn-sm btn-primary mr-3">Keist</a>
+                                <a href="{{ route('admin.role.edit',$role->id) }}" class="btn btn-sm btn-primary mr-3">Keisti</a>
                             </div>
                         </li>
                         @endforeach

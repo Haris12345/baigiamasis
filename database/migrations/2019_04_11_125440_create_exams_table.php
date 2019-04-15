@@ -13,15 +13,19 @@ class CreateExamsTable extends Migration
      */
     public function up()
     {
-        Schema::create('settlements', function (Blueprint $table) {
+        Schema::create('exams', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('studies_program_code');
             $table->string('subject_code');
             $table->string('subject_name');
+            $table->integer('teacher_id');
             $table->integer('student_id');
-            $table->integer('mark');
+            $table->string('group');
+            $table->integer('mark')->nullable();
+            $table->string('comments')->nullable();
             $table->string('settlement_type');
             $table->string('studies_form');
+            $table->date('date');
             $table->timestamps();
         });
     }

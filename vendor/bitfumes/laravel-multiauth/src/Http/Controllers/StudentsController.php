@@ -35,7 +35,9 @@ class StudentsController extends Controller
         $id = Students::select('id')
         ->where('group', '=', $group)
         ->first();
-        $students = DB::table('students')->paginate(30);
+        $students = DB::table('students')
+        ->where('group', '=', $group)
+        ->paginate(30);
 
         return view('multiauth::admin.students.index', compact('students', 'id', 'group'));
     }
@@ -57,19 +59,19 @@ class StudentsController extends Controller
             'identity_code' => 'required',
             'name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email|unique:students',
+            'email' => 'required',
         ]);
         
         $code = DB::table('groups')
         ->select('studies_program_code')
         ->where('group_name', '=', $request->group)
         ->first();
-        $studies_form = substr($request->group, -4, -2);
+        $studies_form = substr($request->group, -3, -2);
         
-        if($studies_form == 'nl'){
+        if($studies_form == 'l'){
             $studies_form = 'Nuolatinė';
         }
-        if($studies_form == 'ii'){
+        if($studies_form == 'i'){
             $studies_form = 'Ištestinė';
         }
 
@@ -79,9 +81,9 @@ class StudentsController extends Controller
         DB::table('students')->insert([
             'name' => $request->name,
             'last_name' => $request->last_name,
-            'identity_code' => $request->identity_code,
+            'identity_code' => $request->input('identity_code'), // for some reason it will insert same value all the time if I leave it like: request->identity_code
             'email' => $request->email,
-            'status' => 'Nestudijuojantis',
+            'status' => 'Studijuoja',
             'group' => $request->group,
             'course' => 1,
             'semester' => 1,
@@ -91,6 +93,10 @@ class StudentsController extends Controller
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
+
+        DB::table('groups')
+        ->where('group_name', '=', $request->group)
+        ->increment('students', 1);
 
         return back()->with('message', 'Studentas sukurtas sėkmingai');
 
@@ -147,37 +153,5 @@ class StudentsController extends Controller
         $student = Students::find($id);
         $student->delete();
         return redirect('/admin/students')->with('message', 'Studentas buvo pašalintas iš duomenų bazės');
-    }
-
-    public function account($id){
-        $student = DB::table('students')
-        ->leftJoin('study_programs', 'students.study_program_id', '=', 'study_programs.id')
-        ->select('students.id', 'students.name', 'students.last_name', 'students.email')
-        ->where('students.id', '=', $id)
-        ->get();
-        return view('multiauth::admin.students.account')->with('student', $student);
-    }
-
-    public function newAccount(Request $request, $id){
-        // pakoreguoti paskyru kurima stvarkyti redirecta po paskyros kurimo
-        $request->validate([
-            'password' => 'required'
-        ]);
-        
-        $student = DB::table('students')->select('id', 'name', 'last_name', 'email')
-        ->where('id', '=', $id)
-        ->first();
-        
-        DB::table('users')->insert(
-            ['id' => $student->id, 'email' => $student->email, 'password' => Hash::make($request->password), 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
-        return redirect('multiauth::admin.students.index')->with('message', 'Studento paskyra sukurta sėkmingai');
-    }
-
-    public function generate(){
-        $keylength = 8;
-		$str = "abcdefghijklmnopqrstuvwxyz123456789";
-		$randstr = substr(str_shuffle($str), 0, $keylength);
-  
-        return $randstr;
     }
 }

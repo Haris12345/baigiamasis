@@ -7,7 +7,7 @@
                     <div class="card-header">
                         {{$semester}}-o semestro atsiskaitymai
                         <span class="float-right">
-                            <a href="" class="btn btn-sm btn-secondary">Atgal</a>
+                            <a href="{{route('admin.students.individual-evaluation', [$group, $id])}}" class="btn btn-sm btn-secondary">Atgal</a>
                         </span>
                     </div>
 

@@ -8,27 +8,31 @@
                     <div class="card-header">
                         Studento paskyra
                         <span class="float-right">
-                            <a href="{{route('admin.students')}}" class="btn btn-sm btn-secondary">Atgal</a>
+                            <a href="" class="btn btn-sm btn-secondary">Atgal</a>
                         </span>
                     </div>
                     <div class="card-body">
                         @include('multiauth::message')
-                        <h3>Studentas: {{$student[0]->name}} {{$student[0]->last_name}}</h3>
-                        <p>El. paštas: {{$student[0]->email}}</p>
-                        <form method="POST" action="{{ route('admin.students.account.new', $student[0]->id) }}">
-                            @csrf
-                            <div class="form-group row">
-                                <generate-password></generate-password>
-                            </div>
-                           
-                            <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ __('Sukurti') }}
-                                    </button>
+                        @if($student == 'SET')
+                        <h3>Šio studento paskyra jau paruošta galite gryžti prie kitų studentų</h3>
+                        @else
+                            <h3>Studentas: {{$student->name}} {{$student->last_name}}</h3>
+                            <p>El. paštas: {{$student->email}}</p>
+                            <form method="POST" action="{{ route('admin.students.account.new', $student->id) }}">
+                                @csrf
+                                <div class="form-group row">
+                                    <generate-password></generate-password>
                                 </div>
-                            </div>
-                        </form>
+                            
+                                <div class="form-group row mb-0">
+                                    <div class="col-md-6 offset-md-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            {{ __('Sukurti') }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>

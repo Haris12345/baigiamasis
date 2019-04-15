@@ -20,8 +20,7 @@
                                 <label for="identity_code" class="col-md-4 col-form-label text-md-right">{{ __('Asmens kodas') }}</label>
     
                                 <div class="col-md-6">
-                                    <input id="identity_code" type="text" class="form-control{{ $errors->has('identity_code') ? ' is-invalid' : '' }}" name="identity_code" value="{{ old('identity_code') }}" required autofocus>
-                                    <input type="hidden" name="group" value="{{$group}}">
+                                    <input id="identity_code" type="text" class="form-control{{ $errors->has('identity_code') ? ' is-invalid' : '' }}" name="identity_code" required autofocus>
                                 </div>
                             </div>
 
@@ -46,6 +45,7 @@
     
                                 <div class="col-md-6">
                                     <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                                    <input type="hidden" name="group" value="{{$group}}">
                                 </div>
                             </div>
 

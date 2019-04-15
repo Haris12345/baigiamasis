@@ -55,20 +55,130 @@ class GroupsController extends Controller
         ]);
         
         $studies_form = $request->get('studies_plan');
-        $studies_form = substr($studies_form, -2);
-        
-        if($studies_form == 'nl'){
-            $studies_form = 'Nuolatinė';
-        }
-        if($studies_form == 'ii'){
-            $studies_form = 'Ištestinė';
-        }
+        $studies_form = substr($studies_form, -1);
+        $credits = array();
+        $evaluation_type = array();
 
         $studies_program_code = $request->get('studies_plan');
-        $studies_program_code = substr($studies_program_code, 0, -2);
+        
 
         $year = substr($request->group_name, -2);
         $year = 2000 + (int)$year;
+
+        if($studies_form == 'l'){
+            $studies_program_code = substr($studies_program_code, 0, -2);
+            $studies_form = 'Nuolatinė';
+            for($i=1; $i<7; $i++){
+                $query = DB::table('study_plans_full_time')
+                ->select('subject_code', 'subject_name', 'subject_status', 'credits_sem'.$i, 'evaluation_type_sem'.$i)
+                ->where('credits_sem'.$i, '!=', NULL, 'AND', 'studies_program_code', '=', $studies_program_code)
+                ->get();
+
+                $k = 0;
+                foreach($query as $studies_plan){
+                    if(isset($studies_plan->credits_sem1)){
+                        array_push($credits, $studies_plan->credits_sem1);
+                        array_push($evaluation_type, $studies_plan->evaluation_type_sem1);
+                    }
+                    if(isset($studies_plan->credits_sem2)){
+                        array_push($credits, $studies_plan->credits_sem2);
+                        array_push($evaluation_type, $studies_plan->evaluation_type_sem2);
+                    }
+                    if(isset($studies_plan->credits_sem3)){
+                        array_push($credits, $studies_plan->credits_sem3);
+                        array_push($evaluation_type, $studies_plan->evaluation_type_sem3);
+                    }
+                    if(isset($studies_plan->credits_sem4)){
+                        array_push($credits, $studies_plan->credits_sem4);
+                        array_push($evaluation_type, $studies_plan->evaluation_type_sem4);
+                    }
+                    if(isset($studies_plan->credits_sem5)){
+                        array_push($credits, $studies_plan->credits_sem5);
+                        array_push($evaluation_type, $studies_plan->evaluation_type_sem5);
+                    }
+                    if(isset($studies_plan->credits_sem6)){
+                        array_push($credits, $studies_plan->credits_sem6);
+                        array_push($evaluation_type, $studies_plan->evaluation_type_sem6);
+                    }
+                    DB::table('group_subjects')
+                    ->insert([
+                        'studies_program_code' => $studies_program_code,
+                        'studies_form' => $studies_form,
+                        'group' => $request->group_name,
+                        'subject_code' => $studies_plan->subject_code,
+                        'subject_name' => $studies_plan->subject_name,
+                        'subject_status' => $studies_plan->subject_status,
+                        'credits' => $credits[$k],
+                        'evaluation_type' => $evaluation_type[$k],
+                        'semester' => $i,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]);
+                    $k++;
+                }
+            }
+        }
+        if($studies_form == 'i'){
+            $studies_program_code = substr($studies_program_code, 0, -1);
+            $studies_form = 'Ištestinė';
+            for($i=1; $i<7; $i++){
+                $query = DB::table('study_plans_extended')
+                ->select('subject_code', 'subject_name', 'subject_status', 'credits_sem'.$i, 'evaluation_type_sem'.$i)
+                ->where('credits_sem'.$i, '!=', NULL, 'AND', 'studies_program_code', '=', $studies_program_code)
+                ->get();
+
+                $k = 0;
+                foreach($query as $studies_plan){
+                    if(isset($studies_plan->credits_sem1)){
+                        array_push($credits, $studies_plan->credits_sem1);
+                        array_push($evaluation_type, $studies_plan->evaluation_type_sem1);
+                    }
+                    if(isset($studies_plan->credits_sem2)){
+                        array_push($credits, $studies_plan->credits_sem2);
+                        array_push($evaluation_type, $studies_plan->evaluation_type_sem2);
+                    }
+                    if(isset($studies_plan->credits_sem3)){
+                        array_push($credits, $studies_plan->credits_sem3);
+                        array_push($evaluation_type, $studies_plan->evaluation_type_sem3);
+                    }
+                    if(isset($studies_plan->credits_sem4)){
+                        array_push($credits, $studies_plan->credits_sem4);
+                        array_push($evaluation_type, $studies_plan->evaluation_type_sem4);
+                    }
+                    if(isset($studies_plan->credits_sem5)){
+                        array_push($credits, $studies_plan->credits_sem5);
+                        array_push($evaluation_type, $studies_plan->evaluation_type_sem5);
+                    }
+                    if(isset($studies_plan->credits_sem6)){
+                        array_push($credits, $studies_plan->credits_sem6);
+                        array_push($evaluation_type, $studies_plan->evaluation_type_sem6);
+                    }
+                    if(isset($studies_plan->credits_sem7)){
+                        array_push($credits, $studies_plan->credits_sem7);
+                        array_push($evaluation_type, $studies_plan->evaluation_type_sem7);
+                    }
+                    if(isset($studies_plan->credits_sem8)){
+                        array_push($credits, $studies_plan->credits_sem8);
+                        array_push($evaluation_type, $studies_plan->evaluation_type_sem8);
+                    }
+                    DB::table('group_subjects')
+                    ->insert([
+                        'studies_program_code' => $studies_program_code,
+                        'studies_form' => $studies_form,
+                        'group' => $request->group_name,
+                        'subject_code' => $studies_plan->subject_code,
+                        'subject_name' => $studies_plan->subject_name,
+                        'subject_status' => $studies_plan->subject_status,
+                        'credits' => $credits[$k],
+                        'evaluation_type' => $evaluation_type[$k],
+                        'semester' => $i,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]);
+                    $k++;
+                }
+            }
+        }
 
         DB::table('groups')->insert([
             'studies_program_code' => $studies_program_code,
@@ -79,7 +189,7 @@ class GroupsController extends Controller
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
-
+        
         return back()->with('message', 'Grupė pridėta sėkmingai');
     }
    

@@ -8,17 +8,65 @@
                     <div class="card-header">
                         Studento paskyra
                         <span class="float-right">
-                            <a href="" class="btn btn-sm btn-secondary">Atgal</a>
+                                <a href="{{route('admin.students')}}" class="btn btn-sm btn-secondary">Visi studentai</a>
+                                <a href="{{route('admin.students.group', $student->group)}}" class="btn btn-sm btn-secondary">Grupės studentai</a>
                         </span>
                     </div>
                     <div class="card-body">
                         @include('multiauth::message')
-                        @if($student == 'SET')
-                        <h3>Šio studento paskyra jau paruošta galite gryžti prie kitų studentų</h3>
+                        @if(isset($account))
+                            <h3>Šio studento paskyra paruošta</h3>
+                            <p>El. paštas: {{$student->email}}</p>
+                            @if($account->active == 1)
+                                <p>Paskyros statusas: aktyvuota</p>
+                                <form method="POST" action="{{ route('admin.students.account.update') }}">
+                                    @csrf
+
+                                    <div class="form-group row">
+                                        <label for="active" class="col-md-4 col-form-label text-md-right">Paskyra aktyvi</label>
+                                        <div class="col-md-6">
+                                            <input type="hidden" name="student" value="{{$student->id}}">
+                                            <input checked type="checkbox" class="form-control" name="active" value=1>
+                                        </div>                   
+                                    </div>
+                                    <span class="float-right">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="far fa-edit"></i> {{ __('Keisti') }}
+                                        </button>
+                                    </span>
+                                </form>
+                            @endif
+                            @if($account->active == 0)
+                                <p>Paskyros statusas: neaktyvuota</p>
+                                <form method="POST" action="{{ route('admin.students.account.update') }}">
+                                    @csrf
+
+                                    <div class="form-group row">
+                                        <label for="active" class="col-md-4 col-form-label text-md-right">Paskyra aktyvi</label>
+                                        <div class="col-md-6">
+                                            <input type="hidden" name="student" value="{{$student->id}}">
+                                            <input type="checkbox" class="form-control" name="active" value=1>
+                                        </div>                   
+                                    </div>
+                                    <span class="float-right">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="far fa-edit"></i> {{ __('Keisti') }}
+                                        </button>
+                                    </span>
+                                </form>
+                            @endif
+                            <span class="float-left">
+                                <form method="post" action="{{route('admin.students.account.delete')}}">
+                                    @csrf
+                                    <input type="hidden" name="student" value="{{$student->id}}">
+                                    <button type="submit"class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i> Trinti</button>
+                                </form>
+                            </span>
                         @else
                             <h3>Studentas: {{$student->name}} {{$student->last_name}}</h3>
                             <p>El. paštas: {{$student->email}}</p>
-                            <form method="POST" action="{{ route('admin.students.account.new', $student->id) }}">
+                            <p>Paskyros statusas: neparuošta</p>
+                            <form method="get" action="{{ route('admin.students.account.new', $student->id) }}">
                                 @csrf
                                 <div class="form-group row">
                                     <generate-password></generate-password>

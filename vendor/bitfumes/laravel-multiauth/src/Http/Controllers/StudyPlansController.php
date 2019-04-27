@@ -105,16 +105,12 @@ class StudyPlansController extends Controller
                 ]);
             }
         }
-        else{
-            return redirect()->route('admin.studies.upload');
-        }
     
-        return redirect()->route('admin.studies')->with('message', 'Studijų planas pridėtas');
+        return redirect()->route('admin.studies.upload')->with('message', 'Studijų planas pridėtas');
     }
 
     public function show($id, $studies_form){
         
-        //checking studies form
         if($studies_form == 'Nuolatinė'){
             $study_plans = DB::table('study_plans_full_time')
             ->where('studies_program_code', '=', $id)
@@ -128,7 +124,310 @@ class StudyPlansController extends Controller
             ->get();
         }
 
-        return view('multiauth::admin.studies.show', compact('study_plans', 'studies_form'));
+        return view('multiauth::admin.studies.show', compact('id', 'study_plans', 'studies_form'));
+    }
+
+    public function new(){
+        return view('multiauth::admin.studies.new');
+    }
+
+    public function create(Request $request){  
+        $count = count($request->semester);
+        $m = 0;
+        if($request->studies_form == 'Nuolatinė'){
+            for($i=0; $i<$count; $i++){
+                $subject_num = $m+1;
+                $subject_num = sprintf("%02d", $subject_num);
+                $subject_code = $request->studies_program_code_abrv . $subject_num;
+
+                for($k=1; $k<7; $k++){
+                    if($request->semester[$i] == $k){
+                        $credits_string = 'credits_sem'.$k;
+                        $evaluation_string = 'evaluation_type_sem'.$k;
+                    }
+                }
+                
+                if($request->id[$i] == 0){
+                    DB::table('study_plans_full_time')
+                    ->insert([
+                        'studies_program_code' => $request->studies_program_code,
+                        'studies_program_name' => $request->studies_program,
+                        'studies_form' => $request->studies_form,
+                        'subject_name' => $request->subject_name[$m],
+                        'subject_code' => $subject_code,
+                        'subject_status' => $request->subject_status[$m],
+                        $credits_string => $request->credits[$i],
+                        $evaluation_string => $request->evaluation_type[$i],
+                        'ECTS_credits' => $request->credits[$i],
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]);
+                    $m++;
+                }
+                else{
+                    $ects = DB::table('study_plans_full_time')
+                    ->select('ECTS_credits')
+                    ->where('subject_name', '=', $request->subject_name[$m-1])
+                    ->first();
+                    $ects = $ects->ECTS_credits + $request->credits[$i];
+                    DB::table('study_plans_full_time')
+                    ->where('subject_name', '=', $request->subject_name[$m-1])
+                    ->update([
+                        $credits_string => $request->credits[$i],
+                        $evaluation_string => $request->evaluation_type[$i],
+                        'ECTS_credits' => $ects
+                    ]);
+                }     
+            } 
+        }
+        if($request->studies_form == 'Ištestinė'){
+            for($i=0; $i<$count; $i++){
+                $subject_num = $m+1;
+                $subject_num = sprintf("%02d", $subject_num);
+                $subject_code = $request->studies_program_code_abrv . $subject_num;
+
+                for($k=1; $k<9; $k++){
+                    if($request->semester[$i] == $k){
+                        $credits_string = 'credits_sem'.$k;
+                        $evaluation_string = 'evaluation_type_sem'.$k;
+                    }
+                }
+                
+                if($request->id[$i] == 0){
+                    DB::table('study_plans_extended')
+                    ->insert([
+                        'studies_program_code' => $request->studies_program_code,
+                        'studies_program_name' => $request->studies_program,
+                        'studies_form' => $request->studies_form,
+                        'subject_name' => $request->subject_name[$m],
+                        'subject_code' => $subject_code,
+                        'subject_status' => $request->subject_status[$m],
+                        $credits_string => $request->credits[$i],
+                        $evaluation_string => $request->evaluation_type[$i],
+                        'ECTS_credits' => $request->credits[$i],
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now()
+                    ]);
+                    $m++;
+                }
+                else{
+                    $ects = DB::table('study_plans_extended')
+                    ->select('ECTS_credits')
+                    ->where('subject_name', '=', $request->subject_name[$m-1])
+                    ->first();
+                    $ects = $ects->ECTS_credits + $request->credits[$i];
+                    DB::table('study_plans_extended')
+                    ->where('subject_name', '=', $request->subject_name[$m-1])
+                    ->update([
+                        $credits_string => $request->credits[$i],
+                        $evaluation_string => $request->evaluation_type[$i],
+                        'ECTS_credits' => $ects
+                    ]);
+                }     
+            } 
+        }
+        return back()->with('message', 'Studijų programa pridėta');
+    }
+
+    public function edit($id, $studies_form){
+        if($studies_form == 'Nuolatinė'){
+            $study_plans = DB::table('study_plans_full_time')
+            ->where('studies_program_code', '=', $id)
+            ->get();
+        }
+        if($studies_form == 'Ištestinė'){
+            $study_plans = DB::table('study_plans_extended')
+            ->where('studies_program_code', '=', $id)
+            ->get();
+        }
+        
+        return view('multiauth::admin.studies.edit', compact('id', 'studies_form', 'study_plans'));
+    }
+
+    public function update(Request $request){
+        if($request->studies_form == "Nuolatinė"){
+            $count = count($request->subject_code);
+            for($i=0; $i<$count; $i++){
+                DB::table('study_plans_full_time')
+                ->where('subject_code', '=', $request->subject_code[$i])
+                ->where('studies_program_code', '=', $request->studies_program_code)
+                ->where('subject_name', '=', $request->subject[$i])
+                ->update([
+                    'credits_sem1' => $request->credits[0][$i],
+                    'evaluation_type_sem1' => $request->evaluation[0][$i],
+                    'credits_sem2' => $request->credits[1][$i],
+                    'evaluation_type_sem2' => $request->evaluation[1][$i],
+                    'credits_sem3' => $request->credits[2][$i],
+                    'evaluation_type_sem3' => $request->evaluation[2][$i],
+                    'credits_sem4' => $request->credits[3][$i],
+                    'evaluation_type_sem4' => $request->evaluation[3][$i],
+                    'credits_sem5' => $request->credits[4][$i],
+                    'evaluation_type_sem5' => $request->evaluation[4][$i],
+                    'credits_sem6' => $request->credits[5][$i],
+                    'evaluation_type_sem6' => $request->evaluation[5][$i],
+                    'updated_at' => Carbon::now()
+                ]);
+                $sum = 0;
+                for($k=0; $k<6; $k++){
+                    $sum += $request->credits[$k][$i];
+                    if($request->credits[$k][$i] != NULL){
+                        DB::table('group_subjects')
+                        ->where('studies_program_code', '=', $request->studies_program_code)
+                        ->where('studies_form', '=', $request->studies_form)
+                        ->where('subject_code', '=', $request->subject_code[$i])
+                        ->update([
+                            'semester' => $k+1,
+                            'credits' => $request->credits[$k][$i],
+                            'evaluation_type' => $request->evaluation[$k][$i],
+                            'updated_at' => Carbon::now()
+                        ]);
+                    }
+                }
+                DB::table('study_plans_full_time')
+                ->where('subject_code', '=', $request->subject_code[$i])
+                ->where('studies_program_code', '=', $request->studies_program_code)
+                ->where('subject_name', '=', $request->subject[$i])
+                ->update([
+                    'ECTS_credits' => $sum
+                ]);
+            }       
+        }
+        if($request->studies_form == "Ištestinė"){
+            $count = count($request->subject_code);
+            for($i=0; $i<$count; $i++){
+                DB::table('study_plans_extended')
+                ->where('subject_code', '=', $request->subject_code[$i])
+                ->where('studies_program_code', '=', $request->studies_program_code)
+                ->where('subject_name', '=', $request->subject[$i])
+                ->update([
+                    'credits_sem1' => $request->credits[0][$i],
+                    'evaluation_type_sem1' => $request->evaluation[0][$i],
+                    'credits_sem2' => $request->credits[1][$i],
+                    'evaluation_type_sem2' => $request->evaluation[1][$i],
+                    'credits_sem3' => $request->credits[2][$i],
+                    'evaluation_type_sem3' => $request->evaluation[2][$i],
+                    'credits_sem4' => $request->credits[3][$i],
+                    'evaluation_type_sem4' => $request->evaluation[3][$i],
+                    'credits_sem5' => $request->credits[4][$i],
+                    'evaluation_type_sem5' => $request->evaluation[4][$i],
+                    'credits_sem6' => $request->credits[5][$i],
+                    'evaluation_type_sem6' => $request->evaluation[5][$i],
+                    'credits_sem7' => $request->credits[6][$i],
+                    'evaluation_type_sem7' => $request->evaluation[6][$i],
+                    'credits_sem8' => $request->credits[7][$i],
+                    'evaluation_type_sem8' => $request->evaluation[7][$i],
+                    'updated_at' => Carbon::now()
+                ]);
+            }
+            $sum = 0;
+            for($k=0; $k<8; $k++){
+                $sum += $request->credits[$k][$i];
+                if($request->credits[$k][$i] != NULL){
+                    DB::table('group_subjects')
+                    ->where('studies_program_code', '=', $request->studies_program_code)
+                    ->where('studies_form', '=', $request->studies_form)
+                    ->where('subject_name', '=', $request->subject[$i])
+                    ->update([
+                        'semester' => $k,
+                        'credits' => $request->credits[$k][$i],
+                        'evaluation_type' => $request->evaluation[$k][$i],
+                        'updated_at' => Carbon::now()
+                    ]);
+                }
+                DB::table('study_plans_extended')
+                ->where('subject_code', '=', $request->subject_code[$i])
+                ->where('studies_program_code', '=', $request->studies_program_code)
+                ->where('subject_name', '=', $request->subject[$i])
+                ->update([
+                    'ECTS_credits' => $sum
+                ]);
+            }
+        }
+        return back()->with('message', 'Studijų planas pakoreguotas');
+    }
+
+    public function delete($studies_program_code, $studies_form){
+        if($studies_form == 'Nuolatinė'){
+            DB::table('study_plans_full_time')
+            ->where('studies_program_code', '=', $studies_program_code)
+            ->delete();
+
+            DB::table('group_subjects')
+            ->where('studies_program_code', '=', $studies_program_code)
+            ->where('studies_form', '=', $studies_form)
+            ->delete();
+        }
+        if($studies_form == 'Ištestinė'){
+            DB::table('study_plans_extended')
+            ->where('studies_program_code', '=', $studies_program_code)
+            ->delete();
+
+            DB::table('group_subjects')
+            ->where('studies_program_code', '=', $studies_program_code)
+            ->where('studies_form', '=', $studies_form)
+            ->delete();
+        }
+        
+        return redirect('/admin/studies');
+    }
+
+    public function downloadFt(){
+        return response()->download(public_path('downloads/Nuolatinių studijų šablonas.xlsx'));
+    }
+    public function downloadEx(){
+        return response()->download(public_path('downloads/Ištestinių studijų šablonas.xlsx'));
+    }
+
+    public function search(Request $request, $studies_program_code, $studies_form){
+        $search = $request->get('search');
+        if($studies_form == 'Nuolatinė'){
+            $results = DB::table('study_plans_full_time')
+            ->where('studies_program_code', '=', $studies_program_code)
+            ->where('studies_form', '=', $studies_form)
+            ->where('subject_name', 'like', '%' . $search . '%')
+            ->orwhere('ECTS_credits', 'like', '%' . $search . '%')
+            ->where('studies_program_code', '=', $studies_program_code)
+            ->where('studies_form', '=', $studies_form)
+            ->get();
+        }
+        if($studies_form == 'Ištestinė'){
+            $results = DB::table('study_plans_extended')
+            ->where('studies_program_code', '=', $studies_program_code)
+            ->where('studies_form', '=', $studies_form)
+            ->where('subject_name', 'like', '%' . $search . '%')
+            ->orwhere('ECTS_credits', 'like', '%' . $search . '%')
+            ->where('studies_program_code', '=', $studies_program_code)
+            ->where('studies_form', '=', $studies_form)
+            ->get();
+        }
+       
+        return view('multiauth::admin.studies.show', ['id' => $studies_program_code, 'studies_form' => $studies_form, 'study_plans' => $results]);
+    }
+
+    public function editSearch(Request $request, $studies_program_code, $studies_form){
+        $search = $request->get('search');
+        if($studies_form == 'Nuolatinė'){
+            $results = DB::table('study_plans_full_time')
+            ->where('studies_program_code', '=', $studies_program_code)
+            ->where('studies_form', '=', $studies_form)
+            ->where('subject_name', 'like', '%' . $search . '%')
+            ->orwhere('ECTS_credits', 'like', '%' . $search . '%')
+            ->where('studies_program_code', '=', $studies_program_code)
+            ->where('studies_form', '=', $studies_form)
+            ->get();
+        }
+        if($studies_form == 'Ištestinė'){
+            $results = DB::table('study_plans_extended')
+            ->where('studies_program_code', '=', $studies_program_code)
+            ->where('studies_form', '=', $studies_form)
+            ->where('subject_name', 'like', '%' . $search . '%')
+            ->orwhere('ECTS_credits', 'like', '%' . $search . '%')
+            ->where('studies_program_code', '=', $studies_program_code)
+            ->where('studies_form', '=', $studies_form)
+            ->get();
+        }
+
+        return view('multiauth::admin.studies.edit', ['id' => $studies_program_code, 'studies_form' => $studies_form, 'study_plans' => $results]);
     }
 }
 

@@ -7,12 +7,15 @@
                     <div class="card-header">
                         {{$group}} grupės atsiskaitymai
                         <span class="float-right">
+                            <a href="{{route('admin.settlements.assignSubject', $group)}}" class="btn btn-sm btn-success">Pasirenkamieji dalykai</a>
                             <a href="{{route('admin.students.group', $group)}}" class="btn btn-sm btn-secondary">Atgal</a>
                         </span>
                     </div>
 
                     <div class="card-body">
                         @include('multiauth::message')
+                        {{-- <a href="" class="btn btn-primary">Suformuoti pažangumo suvestinę</a>
+                        <br></br> --}}
                         <div id="app">
                             <table class="table table-responsive(xl)">
                                 <tr>
@@ -25,7 +28,13 @@
                                 </tr>
                                 @foreach($subjects as $subject)
                                     <tr>
-                                        <td>{{$subject->subject_name}}</td>
+                                        <td style="max-width: 330px">
+                                            @if($subject->evaluation_type == 'prj.')
+                                                {{$subject->subject_name}} (praktika)
+                                            @else
+                                                {{$subject->subject_name}}
+                                            @endif    
+                                        </td>
                                         <td>{{$subject->semester}}</td>
                                         <td>{{$subject->credits}}</td>
                                         <td>{{$subject->evaluation_type}}</td>
@@ -54,14 +63,32 @@
                                                 </form>
                                             </div>
                                         </td>
-                                        <td>
-                                            <form action="{{route('admin.settlements.show', [$group, $subject->subject_code])}}" method="get">
-                                                <input type="hidden" name="semester" value="{{$subject->semester}}">
-                                                <input type="hidden" name="credits" value="{{$subject->credits}}">
-                                                <input type="hidden" name="evaluation_type" value="{{$subject->evaluation_type}}">
-                                                <input type="hidden" name="teacher_id" value="{{$subject->teacher_id}}">
-                                                <button type="submit" class="btn btn-sm btn-primary">Vertinimai</button>
-                                            </form>
+                                        <td> 
+                                            @if(isset($subject->teacher_id))
+                                                <?php $exam_occured = false; ?>
+                                                @foreach($exams as $exam)
+                                                    @if($exam->subject_code == $subject->subject_code)
+                                                        <form action="{{route('admin.settlements.showRetention', [$group, $subject->subject_code])}}" method="get">
+                                                            <input type="hidden" name="semester" value="{{$subject->semester}}">
+                                                            <input type="hidden" name="credits" value="{{$subject->credits}}">
+                                                            <input type="hidden" name="evaluation_type" value="{{$subject->evaluation_type}}">
+                                                            <input type="hidden" name="teacher_id" value="{{$subject->teacher_id}}">                                                  
+                                                            <button class="btn btn-sm btn-light">Perlaikymai</button>
+                                                            <?php $exam_occured = true; ?>
+                                                        </form>
+                                                        @break
+                                                    @endif
+                                                @endforeach  
+                                                @if($exam_occured == false)
+                                                    <form action="{{route('admin.settlements.show', [$group, $subject->subject_code])}}" method="get">
+                                                        <input type="hidden" name="semester" value="{{$subject->semester}}">
+                                                        <input type="hidden" name="credits" value="{{$subject->credits}}">
+                                                        <input type="hidden" name="evaluation_type" value="{{$subject->evaluation_type}}">
+                                                        <input type="hidden" name="teacher_id" value="{{$subject->teacher_id}}">
+                                                        <button type="submit" class="btn btn-sm btn-primary">Vertinimai</button>
+                                                    </form>
+                                                @endif
+                                            @endif                 
                                         </td>
                                     </tr>
                                 @endforeach

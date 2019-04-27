@@ -15,10 +15,6 @@ class Students extends Model
     public $timestamps = true;
     //fillable fields
     protected $fillable = [
-        'name', 'last_name', 'email', 'study_program_id', 'course', 
+        'studies_program_code', 'group', 'identity_code', 'name', 'last_name', 'email'
     ];
-
-    public function course(){
-        return $this->belongsTo('App\Study_programs');
-    }
 }

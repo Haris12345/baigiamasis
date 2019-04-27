@@ -7,7 +7,8 @@
                 <div class="card-header">
                    Studento informacija
                     <span class="float-right">
-                        <a href="{{route('admin.register')}}" class="btn btn-sm btn-danger">Ištrinti</a>
+                            <a href="{{route('admin.students')}}" class="btn btn-sm btn-secondary">Visi studentai</a>
+                            <a href="{{route('admin.students.group', $student->group)}}" class="btn btn-sm btn-secondary">Grupės studentai</a>
                     </span>
                 </div>
                 <div class="card-body">
@@ -21,8 +22,11 @@
                     <p>El. paštas: {{$student->email}}</p>
                     <p>Statusas: {{$student->status}}</p>
                     <p>Grupės sukūrimo metai: {{$student->year}}</p>
-                    <a href="{{route('admin.students.group', $student->group)}}" class="btn btn-secondary">Atgal</a>
-                    <span class="float-right"><a href="{{route('admin.students.edit', $student->id)}}" class="btn btn-success">Keisti</a></span>
+                    <div class="form-group row mb-0">
+                        <div class="col-md-6 offset-md-5">
+                            <a href="{{route('admin.students.edit', $student->id)}}" class="btn btn-success">Keisti</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -39,7 +39,8 @@ class LoginController extends Controller
 
         $this->clearLoginAttempts($request);
 
-        return redirect($this->redirectPath());
+        //return redirect($this->redirectPath());
+        return redirect()->intended($default = '/admin/pagrindinis-pusl');
     }
 
     /**

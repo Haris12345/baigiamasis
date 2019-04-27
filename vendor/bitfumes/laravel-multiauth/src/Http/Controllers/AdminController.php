@@ -5,6 +5,7 @@ namespace Bitfumes\Multiauth\Http\Controllers;
 use Bitfumes\Multiauth\Model\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -21,7 +22,14 @@ class AdminController extends Controller
 
     public function index()
     {
-        return view('multiauth::admin.home');
+        $teachers = DB::table('teachers')->count();
+        $students = DB::table('students')->count();
+        $ft = DB::table('study_plans_full_time')->groupBy('studies_program_code')->get();
+        $ex = DB::table('study_plans_extended')->groupBy('studies_program_code')->get();
+        $groups = DB::table('groups')->count();
+        $study_plans = count($ft) + count($ex);
+        
+        return view('multiauth::admin.home', compact('teachers', 'students', 'groups', 'study_plans'));
     }
 
     public function show()

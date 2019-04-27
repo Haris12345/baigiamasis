@@ -23,6 +23,9 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('generate-password', require('./components/generatePassword').default);
 Vue.component('select-teacher', require('./components/selectTeacher').default);
+Vue.component('study-plans', require('./components/studyPlans').default);
+Vue.component('students-filter', require('./components/studentsFilter').default);
+Vue.component('auto-email-fill', require('./components/autoEmailFill').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

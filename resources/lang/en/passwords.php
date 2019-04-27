@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'password' => 'Passwords must be at least eight characters and match the confirmation.',
-    'reset' => 'Your password has been reset!',
-    'sent' => 'We have e-mailed your password reset link!',
-    'token' => 'This password reset token is invalid.',
-    'user' => "We can't find a user with that e-mail address.",
+    'password' => 'Slaptažodžiai turi būti bent 8 simbolių ilgumo bei sutampantys',
+    'reset' => 'Slaptažodis buvo atstatytas!',
+    'sent' => 'Elektroniniu paštu jums atsiuntėme slaptažodžio atstatymo nuorodą!',
+    'token' => 'Šis slaptažodžio raktas nėra teisingas.',
+    'user' => "Negalime rasti vartotojo su šiuo el. pašto adresu.",
 
 ];

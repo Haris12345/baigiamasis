@@ -13,11 +13,39 @@
 
                     <div class="card-body">
                         @include('multiauth::message')
-                        <h3>Dalykas: {{$subject->subject_name}}</h3>
+                        
+                        <span class="float-right">
+                            <form method="post" action="{{route('admin.settlements.print.exam')}}" target="_blank">
+                                @csrf
+                                <label for="date" class="col-form-label text-md-right">{{ __('Egzamino data') }}</label>       
+                                <input class="form-control" type="text" name="date" placeholder="YYYY-MM-DD" required 
+                                    pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" 
+                                    title="Įveskite datą šiuo formatu: YYYY-MM-DD"/>
+                                <br>
+                                <input type="hidden" name="semester" value="{{$semester}}">
+                                <input type="hidden" name="subject_name" value="{{$subject->subject_name}}">
+                                <input type="hidden" name="teacher_id" value="{{$teacher->teacher_id}}">
+                                <input type="hidden" name="evaluation_type" value="{{$evaluation_type}}">
+                                <input type="hidden" name="group" value="{{$group}}">
+                                <input type="hidden" name="studies_form" value="{{$subject->studies_form}}">
+                                @foreach( $students as $student )
+                                    <input type="hidden" name="student_id[]" value="{{$student->id}}">
+                                @endforeach
+                                <button type="submit" class="btn btn-primary">Spausdinti žiniaraštį</button>
+                            </form>
+                        </span>
+                        <h3>Dalykas: 
+                            @if($subject->evaluation_type == 'prj.')
+                                {{$subject->subject_name}} praktika
+                            @else
+                                {{$subject->subject_name}}
+                            @endif    
+                        </h3>
                         <p>Kreditai: {{$credits}}</p>
                         <p>Atsiskaitymo forma: {{$evaluation_type}}</p>
                         <p>Atsiskaitymo semestras: {{$semester}}</p>
                         <p>Dalyko dėstytojas: {{$teacher->teacher_name}} {{$teacher->teacher_last_name}}</p>
+                        <p>Svarbu! Pastabų raktiniai žodžiai: Perlaikymas, Skola</p>
                         <form method="POST" action="{{route('admin.settlements.create')}}">
                             @csrf
                             <input type="hidden" name="studies_program_code" value="{{$subject->studies_program_code}}">
@@ -31,7 +59,9 @@
                                 <label for="date" class="col-md-4 col-form-label text-md-right">{{ __('Egzamino data') }}</label>
 
                                 <div class="col-md-6">                                    
-                                        <input name="date" date-date="" date-date-format="YYYY-MM-DD"  type='date' class="form-control" />
+                                    <input class="form-control" type="text" name="date" placeholder="YYYY-MM-DD" required 
+                                        pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" 
+                                        title="Įveskite datą šiuo formatu: YYYY-MM-DD"/>
                                 </div>
                             </div>
                             @foreach( $students as $student )

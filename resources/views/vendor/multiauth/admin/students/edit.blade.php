@@ -41,16 +41,31 @@
                             </div>
 
                             <div class="form-group row">
-                                    <label for="group" class="col-md-4 col-form-label text-md-right">{{ __('Grupė') }}</label>
-        
-                                    <div class="col-md-6">
-                                        <select  name="group" class="form-control" value="{{$student->group}}">
-                                            @foreach($group as $grp)
-                                                <option>{{$grp->group_name}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
+                                <label for="group" class="col-md-4 col-form-label text-md-right">{{ __('Grupė') }}</label>
+    
+                                <div class="col-md-6">
+                                    <select  name="group" class="form-control" value="{{$student->group}}">
+                                        @foreach($group as $grp)
+                                            <option>{{$grp->group_name}}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="group" class="col-md-4 col-form-label text-md-right">{{ __('Studijų būsena') }}</label>
+                                <div class="col-md-6">
+                                    <select name="status" class="form-control">
+                                        <option value="{{$student->status}}">{{$student->status}}</option>
+                                        <option value="Studijuoja" >Studijuoja</option>
+                                        <option value="Nutrauktos studijos" >Nutrauktos studijos</option>
+                                        <option value="Pertrauktos studijos" >Pertrauktos studijos</option>
+                                        <option value="Užbaigtos studijos" >Užbaigtos studijos</option>
+                                        <option value="Išvykęs į dalines studijas" >Išvykęs į dalines studijas</option>
+                                        <option value="Atvykęs dalinėms studijoms" >Atvykęs dalinėms studijoms</option>
+                                    </select>
+                                </div>
+                            </div>
 
                             <div class="form-group row">
                                 <label for="semester" class="col-md-4 col-form-label text-md-right">{{ __('Semestras') }}</label>

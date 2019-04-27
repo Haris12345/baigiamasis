@@ -2,23 +2,28 @@
 
 namespace App\Imports;
 
-use Maatwebsite\Excel\Concerns\ToModel;
 use App\Teachers;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 
-class TeachersImport implements ToModel, WithStartRow
+class TeachersImport implements ToCollection, WithStartRow
 {
     /**
-    * @param Collection $collection
+    * @param array $row
+    *
+    * @return \Illuminate\Database\Eloquent\Model|null
     */
-    public function model(array $row)
+    public function Collection(Collection $rows)
     {
-        return new Teachers([
-           'identity_code' => $row[0],
-           'role' => $row[1],
-           'name' => $row[2],
-           'last_name' => $row[3]
-        ]);
+        foreach($rows as $row){
+            Teachers::create([
+                'identity_code' => $row[0],
+                'role' => $row[1],
+                'name' => $row[2],
+                'last_name' => $row[3]
+            ]);
+        }        
     }
 
     public function startRow(): int{

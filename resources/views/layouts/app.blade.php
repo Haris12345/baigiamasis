@@ -23,7 +23,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ route('home') }}">
                     Studento aplinka
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -44,8 +44,15 @@
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Prisijungti') }}</a>
                             </li>
                         @else
+                            
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('overview') }}">{{ __('Studijų apžvalga') }}</a>
+                                <a class="nav-link" href="{{route('debts')}}">{{ __('Skolos') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="">{{ __('Vidurkiai') }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('overview') }}">{{ __('Atsiskaitymai') }}</a>                   
                             </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -53,6 +60,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('password') }}"> {{ __('Keisti Slaptažodį') }}</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

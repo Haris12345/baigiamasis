@@ -20,6 +20,7 @@
                                 <label for="identity_code" class="col-md-4 col-form-label text-md-right">{{ __('Asmens kodas') }}</label>
     
                                 <div class="col-md-6">
+                                    <input type="hidden" name="group" value="{{$group}}">
                                     <input id="identity_code" type="text" class="form-control{{ $errors->has('identity_code') ? ' is-invalid' : '' }}" name="identity_code" required autofocus>
                                 </div>
                             </div>
@@ -44,8 +45,18 @@
                                 <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('El. paštas') }}</label>
     
                                 <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required autofocus>
+                                    <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value='@stud.akolegija.lt' required autofocus>
                                     <input type="hidden" name="group" value="{{$group}}">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="group" class="col-md-4 col-form-label text-md-right">{{ __('Studijų būsena') }}</label>
+                                <div class="col-md-6">
+                                    <select name="status" class="form-control">
+                                        <option value="Studijuoja" >Studijuoja</option>
+                                        <option value="Atvykęs dalinėms studijoms" >Atvykęs dalinėms studijoms</option>
+                                    </select>
                                 </div>
                             </div>
 

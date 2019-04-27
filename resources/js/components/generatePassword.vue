@@ -20,11 +20,10 @@
         },
         methods: {
             generate(){
-                axios.post('/admin/students/account/generate', {
+                axios.post('/admin/studentai/paskyra/generuoti', {
                     password: this.password
                 }).then(response => {
                     this.password = response.data
-                    console.log(this.password)
                 });        
             }
         }

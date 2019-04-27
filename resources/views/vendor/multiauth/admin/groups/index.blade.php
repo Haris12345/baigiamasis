@@ -6,47 +6,42 @@
                 <div class="card">
                     <div class="card-header">
                         Grupės
-                        <span class="float-right">
-                            <a href="{{route('admin.groups.new')}}" class="btn btn-sm btn-success">Nauja grupė</a>
+                        <span class="float-right">   
+                            <form method="get" action="{{route('admin.groups.search')}}">
+                                <div class="input-group">
+                                    <button href="{{route('admin.groups')}}" class="btn btn-sm btn-secondary input-group-prepend">Atstatyti</button>
+                                    <input name="search" type="text" >
+                                    <button type="submit" class="input-group-prepend"><i class="fas fa-search"></i></button>
+                                    <a style="margin-left: 10px" href="{{route('admin.groups.new')}}" class="btn btn-sm btn-success">Nauja grupė</a>   
+                                </div> 
+                            </form>
                         </span>
                     </div>
                     <div class="card-body">
+                        @include('multiauth::message')
                         @if(!isset($id->id))
                             <p>Nėra pridėta jokių grupių</p>
                         @else
-                        @include('multiauth::message')
-                        @foreach($groups_ft as $ft)
-                            @if(isset($ft->studies_form))
+                            @foreach($groups as $group)
                                 <div class="list-group">
-                                    <a href="{{route('admin.students.group', $ft->group_name)}}" class="list-group-item list-group-item-action">
+                                    <a href="{{route('admin.students.group', $group->group_name)}}" class="list-group-item list-group-item-action">
                                         <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">{{$ft->studies_program_name}}</h5>
-                                            <small>{{$ft->studies_form}}</small>
+                                            @if($group->studies_form == 'Nuolatinė')
+                                                <h5 class="mb-1">{{$group->program_name_ft}}</h5>
+                                            @endif
+                                            @if($group->studies_form == 'Ištestinė')
+                                                <h5 class="mb-1">{{$group->program_name_ex}}</h5>
+                                            @endif
+                                            <small>{{$group->studies_form}}</small>
                                         </div>
-                                        <p class="mb-1">Grupė: {{$ft->group_name}} Studentai: {{$ft->students}}</p>
+                                        <p class="mb-1">Grupė: {{$group->group_name}} Studentai: {{$group->students}}</p>
                                     </a>
                                 </div>
-                            @endif
-                        @endforeach
-                        
-                        @foreach($groups_ex as $ex)
-                            @if(isset($ex->studies_form))
-                                <div class="list-group">
-                                    <a href="{{route('admin.students.group', $ex->group_name)}}" class="list-group-item list-group-item-action">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">{{$ex->studies_program_name}}</h5>
-                                            <small>{{$ex->studies_form}}</small>
-                                        </div>
-                                        <p class="mb-1">Grupė: {{$ex->group_name}} Studentai: {{$ex->students}}</p>
-                                    </a>
-                                </div>
-                            @endif
-                        @endforeach
-                        {{-- NEEDS PAGINATE --}}
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-@endif             
+    @endif             
 @endsection

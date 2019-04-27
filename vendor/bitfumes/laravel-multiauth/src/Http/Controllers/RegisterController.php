@@ -118,7 +118,7 @@ class RegisterController extends Controller
         $admin->update($request->except('role_id'));
         $admin->roles()->sync(request('role_id'));
 
-        return redirect(route('admin.show'))->with('message', "{$admin->name} buvo atnaujinta");
+        return redirect(route('admin.show'))->with('message', "Paskyra {$admin->name} buvo atnaujinta");
     }
 
     public function destroy(Admin $admin)
@@ -126,6 +126,6 @@ class RegisterController extends Controller
         $prefix = config('multiauth.prefix');
         $admin->delete();
 
-        return redirect(route('admin.show'))->with('message', "Jūs ištrynėte {$prefix} sėkmingai");
+        return redirect(route('admin.show'))->with('message', "Jūs ištrynėte administratoriaus: {$admin->name} paskyrą");
     }
 }

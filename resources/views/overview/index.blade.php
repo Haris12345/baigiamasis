@@ -8,11 +8,11 @@
                 <div class="card-header">Studijų apžvalga</div>
 
                 <div class="card-body">
-                    {{-- @if (session('status'))
+                    @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
-                    @endif --}}
+                    @endif
                     <div id="app">
                         <table class="table table-responsive(xl)">
                             <tr>
@@ -27,30 +27,22 @@
 
                             @foreach ($subjects as $subject)
                                 <tr>
-                                    <td>{{$subject->subject_name}}</td>
+                                    <td>
+                                        @if($subject->settlement_type == 'prj.')
+                                            {{$subject->subject_name}} (praktika)
+                                        @else
+                                            {{$subject->subject_name}}
+                                        @endif
+                                    </td>
                                     <td>{{$subject->semester}}</td>
                                     <td>{{$subject->credits}}</td>
-                                    <td>{{$subject->evaluation_type}}</td>
+                                    <td>{{$subject->settlement_type}}</td>
                                     <td>{{$subject->teacher_name}} {{$subject->teacher_last_name}}</td>
                                     <td>
-                                        @foreach ($exams as $exam)
-                                            @if($subject->subject_code == $exam->subject_code)
-                                                {{$exam->date}}
-                                            @else
-                                                Neįvyko
-                                            @endif
-                                        @endforeach
-                                        
+                                        {{$subject->date}}
                                     </td>
                                     <td>
-                                        @foreach ($exams as $exam)
-                                            @if($subject->subject_code == $exam->subject_code)
-                                                {{$exam->mark}}
-                                            @else
-                                                Nevertinta
-                                            @endif
-                                        @endforeach
-                                        
+                                        {{$subject->mark}}
                                     </td>
                                 </tr>
                             @endforeach

@@ -13,8 +13,18 @@
                 </div>
                 <div class="card-body">
                     @include('multiauth::message')
+                    <span class="float-right">  
+                        <form method="get" action="{{route('admin.teachers.search')}}">
+                            <div class="input-group">
+                                <button href="{{route('admin.teachers')}}" class="btn btn-sm btn-secondary input-group-prepend">Atstatyti</button>
+                                <input name="search" type="text" >
+                                <button type="submit" class="input-group-prepend"><i class="fas fa-search"></i></button>
+                            </div>     
+                        </form>                                        
+                    </span>
+                    <br></br>
                     @if(!isset($teachers[0]->id))
-                        <p>Nepridėtas nei vienas dėstytojas</p>
+                        <p>Dėstytojų nerasta</p>
                     @else
                         <table class="table table-responsive(xl)">
                             <tr>

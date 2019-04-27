@@ -7,11 +7,15 @@
                     <div class="card-header">
                         Ikėlimas iš Excel failo
                         <span class="float-right">
-                            <a href="{{route('admin.studies')}}" class="btn btn-sm btn-secondary">Atgal</a>
+                            <a href="{{route('admin.teachers')}}" class="btn btn-sm btn-secondary">Atgal</a>
                         </span>
                     </div>
                     <div class="card-body">
                         @include('multiauth::message')
+                        <span class="float-right">
+                            <a href="{{route('admin.teachers.download')}}" class="btn btn-primary">Dėstytojų šablonas</a>
+                        </span>
+                        <br/>
                         <h3>Dėstytojų įkėlimas iš Excel failo</h3>
                         <form method="post" action="{{route('admin.teachers.import')}}" enctype="multipart/form-data">
                             @csrf

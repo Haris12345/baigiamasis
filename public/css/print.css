@@ -1,0 +1,21 @@
+@media print {
+    #printPageButton {
+        display: none;
+    }
+}
+
+body{
+    font-family: "Times New Roman";
+}
+center{
+    font-size: 16px;
+}
+table, th, td {
+    padding-left: 10px;
+    padding-right: 10px;
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+.date{
+    margin-left: 90px;
+}

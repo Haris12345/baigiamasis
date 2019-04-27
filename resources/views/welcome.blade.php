@@ -10,10 +10,11 @@
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
         <!-- Styles -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <style>
             html, body {
-                background-color: #fff;
-                color: #636b6f;
+                background-image: url('images/Alytaus_kolegija_2.jpg');
+                color: black;
                 font-family: 'Nunito', sans-serif;
                 font-weight: 200;
                 height: 100vh;
@@ -68,7 +69,7 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Studento puslapis</a>
+                        <a href="{{ url('/pagrindinis-pusl') }}">Studento puslapis</a>
                     @else
                         <a href="{{ route('login') }}">Prisijungti</a>
 
@@ -76,15 +77,22 @@
                 </div>
             @endif
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Studentų pažangumo sistema
-                </div>
-
-                
-                <div class="links">
-                        <a href="{{ route('login') }}">Prisijungti</a>
+            <div class="content">       
+                <div class="jumbotron">
+                    <div class="title m-b-md">
+                        <div>
+                                Alytaus kolegijos
+                        </div>
+                        <div>
+                                Studentų pažangumo sistema
+                        </div>  
                     </div>
+                    <hr class="my-4">
+                    <p>Greitai ir paprastai sekite savo studijų pažangumą</p>
+                    <p class="lead">
+                        <a class="btn btn-primary btn-lg" href="{{ route('login') }}" role="button">Prisijungti</a>
+                    </p>
+                </div>  
             </div>
         </div>
     </body>

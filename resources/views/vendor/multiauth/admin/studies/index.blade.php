@@ -8,6 +8,7 @@
                         Studiju planai
                         <span class="float-right">
                             <a href="{{route('admin.studies.upload')}}" class="btn btn-sm btn-success">Importuoti studijų planus</a>
+                            <a href="{{route('admin.studies.new')}}" class="btn btn-sm btn-success">Rankinis pridėjimas</a>
                         </span>
                     </div>
                     <div class="card-body">

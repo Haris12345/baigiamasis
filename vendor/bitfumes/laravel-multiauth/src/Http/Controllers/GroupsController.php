@@ -23,22 +23,14 @@ class GroupsController extends Controller
 
     public function index(){
         $id = DB::table('groups')->select('id')->first();
-        $groups_ft = DB::table('groups')
-        ->leftJoin('study_plans_full_time', function($join){
-            $join->on('groups.studies_program_code', '=', 'study_plans_full_time.studies_program_code');
-            $join->on('groups.studies_form', '=', 'study_plans_full_time.studies_form');
-        })
-        ->groupBy('groups.studies_program_code')
+        $groups = DB::table('groups')
+        ->select('groups.studies_program_code', 'groups.group_name', 'groups.students', 'groups.studies_form', 'study_plans_full_time.studies_program_name AS program_name_ft', 'study_plans_extended.studies_program_name AS program_name_ex')
+        ->leftJoin('study_plans_extended', 'groups.studies_program_code', 'study_plans_extended.studies_program_code')
+        ->leftJoin('study_plans_full_time', 'groups.studies_program_code', 'study_plans_full_time.studies_program_code')
+        ->groupBy('groups.id')
         ->paginate(20);
-        
-        $groups_ex = DB::table('groups')
-        ->leftJoin('study_plans_extended', function($join){
-            $join->on('groups.studies_program_code', '=', 'study_plans_extended.studies_program_code');
-            $join->on('groups.studies_form', '=', 'study_plans_extended.studies_form');
-        })
-        ->groupBy('groups.studies_program_code')
-        ->paginate(20);
-        return view('multiauth::admin.groups.index', compact('groups_ft', 'groups_ex', 'id'));
+
+        return view('multiauth::admin.groups.index', compact('groups', 'id'));
     }
 
     public function new(){
@@ -56,8 +48,6 @@ class GroupsController extends Controller
         
         $studies_form = $request->get('studies_plan');
         $studies_form = substr($studies_form, -1);
-        $credits = array();
-        $evaluation_type = array();
 
         $studies_program_code = $request->get('studies_plan');
         
@@ -71,34 +61,34 @@ class GroupsController extends Controller
             for($i=1; $i<7; $i++){
                 $query = DB::table('study_plans_full_time')
                 ->select('subject_code', 'subject_name', 'subject_status', 'credits_sem'.$i, 'evaluation_type_sem'.$i)
-                ->where('credits_sem'.$i, '!=', NULL, 'AND', 'studies_program_code', '=', $studies_program_code)
+                ->where('credits_sem'.$i, '!=', NULL)
+                ->where('studies_program_code', '=', $studies_program_code)
                 ->get();
-
-                $k = 0;
+                
                 foreach($query as $studies_plan){
                     if(isset($studies_plan->credits_sem1)){
-                        array_push($credits, $studies_plan->credits_sem1);
-                        array_push($evaluation_type, $studies_plan->evaluation_type_sem1);
+                        $credits = $studies_plan->credits_sem1;
+                        $evaluation_type = $studies_plan->evaluation_type_sem1;
                     }
                     if(isset($studies_plan->credits_sem2)){
-                        array_push($credits, $studies_plan->credits_sem2);
-                        array_push($evaluation_type, $studies_plan->evaluation_type_sem2);
+                        $credits = $studies_plan->credits_sem2;
+                        $evaluation_type = $studies_plan->evaluation_type_sem2;
                     }
                     if(isset($studies_plan->credits_sem3)){
-                        array_push($credits, $studies_plan->credits_sem3);
-                        array_push($evaluation_type, $studies_plan->evaluation_type_sem3);
+                        $credits = $studies_plan->credits_sem3;
+                        $evaluation_type = $studies_plan->evaluation_type_sem3;
                     }
                     if(isset($studies_plan->credits_sem4)){
-                        array_push($credits, $studies_plan->credits_sem4);
-                        array_push($evaluation_type, $studies_plan->evaluation_type_sem4);
+                        $credits = $studies_plan->credits_sem4;
+                        $evaluation_type = $studies_plan->evaluation_type_sem4;
                     }
                     if(isset($studies_plan->credits_sem5)){
-                        array_push($credits, $studies_plan->credits_sem5);
-                        array_push($evaluation_type, $studies_plan->evaluation_type_sem5);
+                        $credits = $studies_plan->credits_sem5;
+                        $evaluation_type = $studies_plan->evaluation_type_sem5;
                     }
                     if(isset($studies_plan->credits_sem6)){
-                        array_push($credits, $studies_plan->credits_sem6);
-                        array_push($evaluation_type, $studies_plan->evaluation_type_sem6);
+                        $credits = $studies_plan->credits_sem6;
+                        $evaluation_type = $studies_plan->evaluation_type_sem6;
                     }
                     DB::table('group_subjects')
                     ->insert([
@@ -108,58 +98,57 @@ class GroupsController extends Controller
                         'subject_code' => $studies_plan->subject_code,
                         'subject_name' => $studies_plan->subject_name,
                         'subject_status' => $studies_plan->subject_status,
-                        'credits' => $credits[$k],
-                        'evaluation_type' => $evaluation_type[$k],
+                        'credits' => $credits,
+                        'evaluation_type' => $evaluation_type,
                         'semester' => $i,
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ]);
-                    $k++;
                 }
             }
         }
         if($studies_form == 'i'){
             $studies_program_code = substr($studies_program_code, 0, -1);
             $studies_form = 'Ištestinė';
-            for($i=1; $i<7; $i++){
+            for($i=1; $i<9; $i++){
                 $query = DB::table('study_plans_extended')
                 ->select('subject_code', 'subject_name', 'subject_status', 'credits_sem'.$i, 'evaluation_type_sem'.$i)
-                ->where('credits_sem'.$i, '!=', NULL, 'AND', 'studies_program_code', '=', $studies_program_code)
+                ->where('credits_sem'.$i, '!=', NULL)
+                ->where('studies_program_code', '=', $studies_program_code)
                 ->get();
 
-                $k = 0;
                 foreach($query as $studies_plan){
                     if(isset($studies_plan->credits_sem1)){
-                        array_push($credits, $studies_plan->credits_sem1);
-                        array_push($evaluation_type, $studies_plan->evaluation_type_sem1);
+                        $credits = $studies_plan->credits_sem1;
+                        $evaluation_type = $studies_plan->evaluation_type_sem1;
                     }
                     if(isset($studies_plan->credits_sem2)){
-                        array_push($credits, $studies_plan->credits_sem2);
-                        array_push($evaluation_type, $studies_plan->evaluation_type_sem2);
+                        $credits = $studies_plan->credits_sem2;
+                        $evaluation_type = $studies_plan->evaluation_type_sem2;
                     }
                     if(isset($studies_plan->credits_sem3)){
-                        array_push($credits, $studies_plan->credits_sem3);
-                        array_push($evaluation_type, $studies_plan->evaluation_type_sem3);
+                        $credits = $studies_plan->credits_sem3;
+                        $evaluation_type = $studies_plan->evaluation_type_sem3;
                     }
                     if(isset($studies_plan->credits_sem4)){
-                        array_push($credits, $studies_plan->credits_sem4);
-                        array_push($evaluation_type, $studies_plan->evaluation_type_sem4);
+                        $credits = $studies_plan->credits_sem4;
+                        $evaluation_type = $studies_plan->evaluation_type_sem4;
                     }
                     if(isset($studies_plan->credits_sem5)){
-                        array_push($credits, $studies_plan->credits_sem5);
-                        array_push($evaluation_type, $studies_plan->evaluation_type_sem5);
+                        $credits = $studies_plan->credits_sem5;
+                        $evaluation_type = $studies_plan->evaluation_type_sem5;
                     }
                     if(isset($studies_plan->credits_sem6)){
-                        array_push($credits, $studies_plan->credits_sem6);
-                        array_push($evaluation_type, $studies_plan->evaluation_type_sem6);
+                        $credits = $studies_plan->credits_sem6;
+                        $evaluation_type = $studies_plan->evaluation_type_sem6;
                     }
                     if(isset($studies_plan->credits_sem7)){
-                        array_push($credits, $studies_plan->credits_sem7);
-                        array_push($evaluation_type, $studies_plan->evaluation_type_sem7);
+                        $credits = $studies_plan->credits_sem7;
+                        $evaluation_type = $studies_plan->evaluation_type_sem7;
                     }
                     if(isset($studies_plan->credits_sem8)){
-                        array_push($credits, $studies_plan->credits_sem8);
-                        array_push($evaluation_type, $studies_plan->evaluation_type_sem8);
+                        $credits = $studies_plan->credits_sem8;
+                        $evaluation_type = $studies_plan->evaluation_type_sem8;
                     }
                     DB::table('group_subjects')
                     ->insert([
@@ -169,22 +158,32 @@ class GroupsController extends Controller
                         'subject_code' => $studies_plan->subject_code,
                         'subject_name' => $studies_plan->subject_name,
                         'subject_status' => $studies_plan->subject_status,
-                        'credits' => $credits[$k],
-                        'evaluation_type' => $evaluation_type[$k],
+                        'credits' => $credits,
+                        'evaluation_type' => $evaluation_type,
                         'semester' => $i,
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ]);
-                    $k++;
                 }
             }
         }
+        $students = DB::table('students')
+        ->select('id')
+        ->where('group', '=', $request->group_name)
+        ->get();
 
+        if(isset($students->id)){
+            $students = count($students->id);
+        }
+        else{
+            $students = 0;
+        }
+       
         DB::table('groups')->insert([
             'studies_program_code' => $studies_program_code,
             'group_name' => $request->group_name,
             'studies_form' => $studies_form,
-            'students' => 0,
+            'students' => $students,
             'year' => $year,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
@@ -193,4 +192,21 @@ class GroupsController extends Controller
         return back()->with('message', 'Grupė pridėta sėkmingai');
     }
    
+    public function search(Request $request){
+        $search = $request->get('search');
+        $id = DB::table('groups')->select('id')->first();
+        $results = DB::table('groups')
+        ->select('groups.studies_program_code', 'groups.group_name', 'groups.students', 'groups.studies_form', 'study_plans_full_time.studies_program_name AS program_name_ft', 'study_plans_extended.studies_program_name AS program_name_ex')
+        ->leftJoin('study_plans_extended', 'groups.studies_program_code', 'study_plans_extended.studies_program_code')
+        ->leftJoin('study_plans_full_time', 'groups.studies_program_code', 'study_plans_full_time.studies_program_code')
+        ->where('groups.group_name', 'like', '%' . $search . '%')
+        ->orwhere('groups.studies_program_code', 'like', '%' . $search . '%')
+        ->orwhere('groups.studies_form', 'like', '%' . $search . '%')
+        ->orwhere('study_plans_full_time.studies_program_name', 'like', '%' . $search . '%')
+        ->orwhere('study_plans_extended.studies_program_name', 'like', '%' . $search . '%')
+        ->groupBy('groups.id')
+        ->paginate(20);
+
+        return view('multiauth::admin.groups.index', ['groups' => $results, 'id' => $id]);
+    }
 }

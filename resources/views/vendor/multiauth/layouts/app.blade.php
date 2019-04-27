@@ -17,6 +17,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -59,7 +60,6 @@
                                     <a class="dropdown-item" href="{{ route('admin.teachers') }}">Dėstytojų sąrašas</a>
                                     <a class="dropdown-item" href="{{ route('admin.groups') }}">Grupės</a>
                                     <a class="dropdown-item" href="{{ route('admin.studies') }}">Studijų planai</a>                                    
-                                    <a class="dropdown-item" href="{{ route('admin.roles') }}">Vartotojai</a>
                                 @endadmin
                                     <a class="dropdown-item" href="{{ route('admin.password.change') }}">Keisti slaptažodį</a>
                                 <a class="dropdown-item" href="/admin/logout" onclick="event.preventDefault();

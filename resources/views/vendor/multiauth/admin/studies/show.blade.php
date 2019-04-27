@@ -7,12 +7,23 @@
                     <div class="card-header">
                         Studijų plano apžvalga
                         <span class="float-right">
+                            <a href="{{route('admin.studies.edit', [$id, $studies_form])}}" class="btn btn-sm btn-primary">Redaguoti</a>
                             <a href="{{route('admin.studies')}}" class="btn btn-sm btn-secondary">Atgal</a>
                         </span>
                     </div>
                     <div class="card-body">
                         @include('multiauth::message')
                         @if($studies_form == 'Nuolatinė')
+                            <span class="float-right">  
+                                <form method="get" action="{{route('admin.studies.search', [$id, $studies_form])}}">
+                                    <div class="input-group">
+                                        <button href="{{route('admin.studies.show',  [$id, $studies_form])}}" class="btn btn-sm btn-secondary input-group-prepend">Atstatyti</button>
+                                        <input name="search" type="text" >
+                                        <button type="submit" class="input-group-prepend"><i class="fas fa-search"></i></button>
+                                    </div>     
+                                </form>                                        
+                            </span>
+                            <br></br>
                             <table class="table table-sm table-bordered">
                                 <thead>
                                 <tr>
@@ -50,6 +61,16 @@
                         @endif
                         
                         @if($studies_form == 'Ištestinė')
+                        <span class="float-right">  
+                            <form method="get" action="{{route('admin.studies.search', [$id, $studies_form])}}">
+                                <div class="input-group">
+                                    <button href="{{route('admin.teachers')}}" class="btn btn-sm btn-secondary input-group-prepend">Atstatyti</button>
+                                    <input name="search" type="text" >
+                                    <button type="submit" class="input-group-prepend"><i class="fas fa-search"></i></button>
+                                </div>     
+                            </form>                                        
+                        </span>
+                        <br></br>
                         <table class="table table-sm table-bordered">
                                 <thead>
                                 <tr>

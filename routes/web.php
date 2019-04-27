@@ -14,10 +14,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Auth::routes(['register' => false]);
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/pagrindinis-pusl', 'HomeController@index')->name('home');
+Route::get('/keisti-slaptazodi','HomeController@showChangePasswordForm')->name('password');
+Route::post('/changePassword','HomeController@changePassword')->name('changePassword');
 
 // overview
-Route::GET('/overview', 'OverviewController@index')->name('overview');
+Route::GET('/atsiskaitymai', 'OverviewController@index')->name('overview');
+
+//debts
+Route::GET('/skolos', 'DebtsController@index')->name('debts');

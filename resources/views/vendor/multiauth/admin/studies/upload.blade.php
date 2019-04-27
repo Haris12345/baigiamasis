@@ -11,6 +11,10 @@
                         </span>
                     </div>
                     <div class="card-body">
+                        @include('multiauth::message')
+                        <a href="{{route('admin.studies.downloadFt')}}" class="btn btn-primary">Nuolatinių studijų šablonas</a>
+                        <a href="{{route('admin.studies.downloadEx')}}" class="btn btn-primary">Ištestinių studijų šablonas</a>
+                        <br></br>
                         <form method="post" action="{{route('admin.studies.import')}}" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
@@ -57,4 +61,9 @@
                                 </div>
                             </div>            
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

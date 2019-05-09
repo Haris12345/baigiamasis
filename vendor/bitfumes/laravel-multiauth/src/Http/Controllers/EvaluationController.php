@@ -97,8 +97,9 @@ class EvaluationController extends Controller
             ->leftJoin('group_subjects', function($join){
                 $join->on('exams.subject_code', '=', 'group_subjects.subject_code');
                 $join->on('exams.group', '=', 'group_subjects.group');
+                $join->on('exams.semester', '=', 'group_subjects.semester');
             })
-            ->where('group_subjects.semester', '=', $semester)
+            ->where('exams.semester', '=', $semester)
             ->where('exams.student_id', '=', $id)
             ->where('exams.group', '=', $group)
             ->get();
@@ -132,6 +133,7 @@ class EvaluationController extends Controller
     }
 
     public function update(Request $request, $group, $id, $semester, $subject_code){
+        $admin = auth('admin')->user()->name;
         $student = DB::table('students')
         ->select('name', 'last_name')
         ->where('id', '=', $id)
@@ -140,10 +142,12 @@ class EvaluationController extends Controller
         DB::table('exams')
         ->where('student_id', '=', $id)
         ->where('subject_code', '=', $subject_code)
+        ->where('semester', '=', $semester)
         ->update([
             'teacher_id' => $request->teacher_id,
             'mark' => $request->mark,
             'comments' => $request->comments,
+            'evaluated_by' => $admin,
             'date' => $request->date
         ]);
 

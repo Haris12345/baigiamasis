@@ -14,11 +14,20 @@ class TeachersImport implements ToCollection, WithStartRow
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
+
+    public function transformDate($value, $format = 'YYYY-mm-dd')
+    {
+        try {
+            return \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
+        } catch (\ErrorException $e) {
+            return \Carbon\Carbon::createFromFormat($format, $value);
+        }
+    }
     public function Collection(Collection $rows)
     {
         foreach($rows as $row){
             Teachers::create([
-                'identity_code' => $row[0],
+                'birth_date' => $this->transformDate($row[0]),
                 'role' => $row[1],
                 'name' => $row[2],
                 'last_name' => $row[3]

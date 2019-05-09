@@ -49,16 +49,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <br/>
-                            <div class="card">
-                                <div calss="card-body">
-                                    <div class="container">
-                                        <center><h4 style="margin-top: 20px">Bendras vidurkis: </h4></center>
-                                        <center><a class="btn btn-primary" href="">Plačiau</a></center>
-                                        <br/>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>

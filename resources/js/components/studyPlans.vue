@@ -30,7 +30,7 @@
             <div class="col-md-6">
                 <select v-model="studies_form" class="form-control" name="studies_form">
                     <option>Nuolatinė</option>
-                    <option>Ištestinė</option>
+                    <option value="Ištestinė">Ištęstinė</option>
                 </select>
             </div>
         </div>
@@ -49,7 +49,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="subject_status" class="col-md-4 col-form-label text-md-right">Dalyko tipas (trumpinys)</label>
+                    <label for="subject_status" class="col-md-4 col-form-label text-md-right">Dalyko statusas (trumpinys)</label>
 
                     <div  class="col-md-6">
                         <input v-model="subject.type" id="subject_status" type="text" class="form-control" name="subject_status[]" required autofocus>

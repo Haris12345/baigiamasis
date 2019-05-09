@@ -35,18 +35,20 @@ class TeachersController extends Controller
 
     public function create(Request $request){
         $request->validate([
-            'identity_code' => 'required|max:11',
+            'birth_date' => 'required',
             'role' => 'required',
             'name' => 'required',
             'last_name' => 'required',
         ]);
-
+        
         DB::table('teachers')
         ->insert([
-            'identity_code' => $request->identity_code,
+            'birth_date' => $request->birth_date,
             'role' => $request->role,
             'name' => $request->name,
-            'last_name' => $request->last_name
+            'last_name' => $request->last_name,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
         ]);
 
         return back()->with('message', 'Dėstytojas sėkmingai pridėtas');
@@ -60,10 +62,11 @@ class TeachersController extends Controller
     public function import(Request $request){
         if($request->hasFile('import')){
             $teachers = Excel::toCollection(new TeachersImport(), $request->file('import'));
-
+           
             foreach($teachers[0] as $column){
+                $birth_date = substr($column[0], 3, -3);
                 DB::table('teachers')->insert([
-                    'identity_code' => $column[0],
+                    'birth_date' => $birth_date,
                     'role' => $column[1],
                     'name' => $column[2],
                     'last_name' => $column[3],
@@ -84,7 +87,7 @@ class TeachersController extends Controller
         $results = DB::table('teachers')
         ->where('name', 'like', '%' . $search . '%')
         ->orwhere('last_name', 'like', '%' . $search . '%')
-        ->orwhere('identity_code', 'like', '%' . $search . '%')
+        ->orwhere('birth_date', 'like', '%' . $search . '%')
         ->orwhere('role', 'like', '%' . $search . '%')
         ->paginate(30);
 

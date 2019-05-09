@@ -37756,7 +37756,9 @@ var render = function() {
             [
               _c("option", [_vm._v("Nuolatinė")]),
               _vm._v(" "),
-              _c("option", [_vm._v("Ištestinė")])
+              _c("option", { attrs: { value: "Ištestinė" } }, [
+                _vm._v("Ištęstinė")
+              ])
             ]
           )
         ])
@@ -37832,7 +37834,7 @@ var render = function() {
                     staticClass: "col-md-4 col-form-label text-md-right",
                     attrs: { for: "subject_status" }
                   },
-                  [_vm._v("Dalyko tipas (trumpinys)")]
+                  [_vm._v("Dalyko statusas (trumpinys)")]
                 ),
                 _vm._v(" "),
                 _c("div", { staticClass: "col-md-6" }, [

@@ -36,7 +36,7 @@
                                         <a href="{{route('admin.studies.show', [$ex->studies_program_code, $ex->studies_form])}}" class="list-group-item list-group-item-action">
                                             <div class="d-flex w-100 justify-content-between">
                                                 <h5 class="mb-1">{{$ex->studies_program_name}}</h5>
-                                                <small>{{$ex->studies_form}}</small>
+                                                <small>Ištęstinė</small>
                                             </div>
                                             <p class="mb-1">{{$ex->studies_program_code}}</p>
                                         </a>

@@ -13,7 +13,7 @@
                     <div class="card-body">
                         @include('multiauth::message')
                         <a href="{{route('admin.studies.downloadFt')}}" class="btn btn-primary">Nuolatinių studijų šablonas</a>
-                        <a href="{{route('admin.studies.downloadEx')}}" class="btn btn-primary">Ištestinių studijų šablonas</a>
+                        <a href="{{route('admin.studies.downloadEx')}}" class="btn btn-primary">Ištęstinių studijų šablonas</a>
                         <br></br>
                         <form method="post" action="{{route('admin.studies.import')}}" enctype="multipart/form-data">
                             @csrf
@@ -40,7 +40,7 @@
                                     <select class="form-control" name="studies_form">
                                         <option>-- Pasirinkite studijų formą --</option>
                                         <option>Nuolatinė</option>
-                                        <option>Ištestinė</option>
+                                        <option value="Ištestinė">Ištęstinė</option>
                                     </select>
                                 </div>
                             </div> 

@@ -131,7 +131,7 @@ class StudyPlansController extends Controller
         return view('multiauth::admin.studies.new');
     }
 
-    public function create(Request $request){  
+    public function create(Request $request){
         $count = count($request->semester);
         $m = 0;
         if($request->studies_form == 'Nuolatinė'){

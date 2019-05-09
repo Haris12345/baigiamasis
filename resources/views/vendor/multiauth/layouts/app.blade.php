@@ -28,7 +28,7 @@
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('admin.home') }}">
-                   Administracinė aplinka
+                    <img src="../../../../../../../images/AK_logo.png" style="height: 30px; width: 140px"><span style="margin-left: 15px">Administracinė aplinka</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">

@@ -17,10 +17,12 @@
                         @csrf
 
                         <div class="form-group row">
-                            <label for="identity_code" class="col-md-4 col-form-label text-md-right">{{ __('Asmens kodas') }}</label>
+                            <label for="birth_date" class="col-md-4 col-form-label text-md-right">{{ __('Gimimo data') }}</label>
 
                             <div class="col-md-6">
-                                <input id="identity_code" type="text" class="form-control{{ $errors->has('identity_code') ? ' is-invalid' : '' }}" name="identity_code" value="{{ old('identity_code') }}" required autofocus>
+                                <input class="form-control" type="text" name="birth_date" placeholder="mmmm-mm-dd" required 
+                                pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" 
+                                title="Įveskite datą šiuo formatu: mmmm-mm-dd"/>
                             </div>
                         </div>
 

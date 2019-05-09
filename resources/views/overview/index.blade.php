@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">Studijų apžvalga</div>
 
@@ -23,6 +23,7 @@
                                 <th>Dėstytojas</th>
                                 <th>Atsiskaitymo data</th>
                                 <th>Įvertinimas</th>
+                                <th>Įvertino</th>
                             </tr>
 
                             @foreach ($subjects as $subject)
@@ -38,12 +39,9 @@
                                     <td>{{$subject->credits}}</td>
                                     <td>{{$subject->settlement_type}}</td>
                                     <td>{{$subject->teacher_name}} {{$subject->teacher_last_name}}</td>
-                                    <td>
-                                        {{$subject->date}}
-                                    </td>
-                                    <td>
-                                        {{$subject->mark}}
-                                    </td>
+                                    <td>{{$subject->date}}</td>
+                                    <td>{{$subject->mark}}</td>
+                                    <td>{{$subject->evaluated_by}}</td>
                                 </tr>
                             @endforeach
                         </table>

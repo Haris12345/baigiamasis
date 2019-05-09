@@ -28,14 +28,14 @@
                     @else
                         <table class="table table-responsive(xl)">
                             <tr>
-                                <th>Asmens kodas</th>
+                                <th>Gimimo data</th>
                                 <th>Pareigos</th>
                                 <th>Vardas</th>
                                 <th>Pavardė</th>
                             </tr>
                             @foreach($teachers as $teacher)
                                 <tr>
-                                    <td>{{$teacher->identity_code}}</td>
+                                    <td>{{$teacher->birth_date}}</td>
                                     <td>{{$teacher->role}}</td>
                                     <td>{{$teacher->name}}</td>
                                     <td>{{$teacher->last_name}}</td>

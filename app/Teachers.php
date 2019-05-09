@@ -10,5 +10,5 @@ class Teachers extends Model
     protected $primaryKey = 'id';
     public $timestamps = true;
 
-    protected $fillable = ['identity_code', 'role', 'name', 'last_name'];
+    protected $fillable = ['birth_date', 'role', 'name', 'last_name'];
 }

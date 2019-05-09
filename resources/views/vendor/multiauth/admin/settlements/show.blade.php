@@ -18,9 +18,9 @@
                             <form method="post" action="{{route('admin.settlements.print.exam')}}" target="_blank">
                                 @csrf
                                 <label for="date" class="col-form-label text-md-right">{{ __('Egzamino data') }}</label>       
-                                <input class="form-control" type="text" name="date" placeholder="YYYY-MM-DD" required 
+                                <input class="form-control" type="text" name="date" placeholder="mmmm-mm-dd" required 
                                     pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" 
-                                    title="Įveskite datą šiuo formatu: YYYY-MM-DD"/>
+                                    title="Įveskite datą šiuo formatu: mmmm-mm-dd"/>
                                 <br>
                                 <input type="hidden" name="semester" value="{{$semester}}">
                                 <input type="hidden" name="subject_name" value="{{$subject->subject_name}}">
@@ -48,6 +48,7 @@
                         <p>Svarbu! Pastabų raktiniai žodžiai: Perlaikymas, Skola</p>
                         <form method="POST" action="{{route('admin.settlements.create')}}">
                             @csrf
+                            <input type="hidden" name="semester" value="{{$semester}}">
                             <input type="hidden" name="studies_program_code" value="{{$subject->studies_program_code}}">
                             <input type="hidden" name="subject_code" value="{{$subject->subject_code}}">
                             <input type="hidden" name="subject_name" value="{{$subject->subject_name}}">
@@ -59,9 +60,9 @@
                                 <label for="date" class="col-md-4 col-form-label text-md-right">{{ __('Egzamino data') }}</label>
 
                                 <div class="col-md-6">                                    
-                                    <input class="form-control" type="text" name="date" placeholder="YYYY-MM-DD" required 
+                                    <input class="form-control" type="text" name="date" placeholder="mmmm-mm-dd" required 
                                         pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" 
-                                        title="Įveskite datą šiuo formatu: YYYY-MM-DD"/>
+                                        title="Įveskite datą šiuo formatu: mmmm-mm-dd"/>
                                 </div>
                             </div>
                             @foreach( $students as $student )
@@ -72,6 +73,8 @@
                                     <div class="col-md-6">
                                         <select class="form-control" name="mark[]">
                                             <option value=0>Įvertinimas</option>
+                                            <option value="Neatvyko">Neatvyko</option>
+                                            <option value="Neatestuotas">Neatestuotas</option>
                                             @for($i=1; $i<11; $i++)
                                                 <option value={{$i}}>{{$i}}</option>
                                             @endfor

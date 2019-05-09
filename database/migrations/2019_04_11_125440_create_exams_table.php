@@ -21,10 +21,12 @@ class CreateExamsTable extends Migration
             $table->integer('teacher_id');
             $table->integer('student_id');
             $table->string('group');
-            $table->integer('mark')->nullable();
+            $table->integer('semester');
+            $table->string('mark')->nullable();
             $table->string('comments')->nullable();
             $table->string('settlement_type');
             $table->string('studies_form');
+            $table->string('evaluated_by');
             $table->date('date');
             $table->timestamps();
         });

@@ -16,7 +16,13 @@
                     <h3>Studentas: {{$student->name}} {{$student->last_name}}</h3>
                     <p>Asmens kodas: {{$student->identity_code}}</p>
                     <p>Grupė: {{$student->group}}</p>
-                    <p>Studiju forma {{$student->studies_form}}</p>
+                    <p>Studiju forma 
+                        @if($student->studies_form == "Ištestinė")
+                            Ištęstinė
+                        @else
+                            {{$student->studies_form}}
+                        @endif    
+                    </p>
                     <p>Semestras: {{$student->semester}}</p>
                     <p>Kursas: {{$student->course}}</p>
                     <p>El. paštas: {{$student->email}}</p>

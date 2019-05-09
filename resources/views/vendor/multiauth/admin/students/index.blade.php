@@ -55,7 +55,7 @@
                                                 <option selected>{{$studies_form}}</option>
                                             @endif
                                             <option value="Nuolatinė">Nuolatinė</option>
-                                            <option value="Ištestinė">Ištestinė</option>
+                                            <option value="Ištestinė">Ištęstinė</option>
                                         </select>
                                         
                                         <label for="status">Studijų būsena</label>
@@ -107,7 +107,13 @@
                                 <td>{{$student->name}}</td>
                                 <td>{{$student->last_name}}</td>
                                 <td>{{$student->semester}}</td>
-                                <td>{{$student->studies_form}}</td>
+                                <td>
+                                    @if($student->studies_form == "Ištestinė")
+                                        Ištęstinė
+                                    @else
+                                        {{$student->studies_form}}
+                                    @endif    
+                                </td>
                                 <td>{{$student->status}}</td>
                                 <td>
                                     <a href="{{route('admin.students.account', $student->id)}}" class="btn btn-sm btn-primary">Paskyra</a>

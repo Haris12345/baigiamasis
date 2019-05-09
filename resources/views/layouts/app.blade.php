@@ -24,7 +24,7 @@
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
                 <a class="navbar-brand" href="{{ route('home') }}">
-                    Studento aplinka
+                    <img src="../images/AK_logo.png" style="height: 30px; width: 140px"><span> Studento aplinka</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -47,9 +47,6 @@
                             
                             <li class="nav-item">
                                 <a class="nav-link" href="{{route('debts')}}">{{ __('Skolos') }}</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="">{{ __('Vidurkiai') }}</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('overview') }}">{{ __('Atsiskaitymai') }}</a>                   

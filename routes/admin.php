@@ -89,13 +89,15 @@
     // Settlements
     Route::GET('/atsiskaitymai/{group}', 'SettlementsController@index')->name('admin.settlements');
     Route::GET('/atsiskaitymai/{group}/{subject_code}', 'SettlementsController@show')->name('admin.settlements.show');
-    Route::POST('/atsiskaitymai/priskirti-destytoja/{subject_code}', 'SettlementsController@assignTeacher')->name('admin.settlements.assignTeacher');
+    Route::POST('/atsiskaitymai/priskirti-destytoja/{subject_code}{semester}', 'SettlementsController@assignTeacher')->name('admin.settlements.assignTeacher');
     Route::POST('/atsiskaitymai/kurti', 'SettlementsController@create')->name('admin.settlements.create');
     Route::GET('/atsiskaitymai/perlaikymai/{group}/{subject_code}', 'SettlementsController@showRetention')->name('admin.settlements.showRetention');
     Route::POST('/atsiskaitymai/spausdinti', 'SettlementsController@print')->name('admin.settlements.print.exam');
     Route::GET('/atsiskaitymai/priskirti-dalyka/grupei/{group}', 'SettlementsController@assignSubject')->name('admin.settlements.assignSubject');
     Route::POST('/atsiskaitymai/priskirti-dalyka/naujinti', 'SettlementsController@updateSubject')->name('admin.settlements.assignSubject.update');
+    Route::GET('/atsiskaitymai/priskirti-dalyka/trinti/{subject}/{group}', 'SettlementsController@deleteSubject')->name('admin.settlements.assignSubject.delete');
     Route::POST('/atsiskaitymai/naujinti', 'SettlementsController@update')->name('admin.settlements.update');
+    Route::POST('/atsiskaitymai/suvestine/atsiusti/{group}', 'SettlementsController@download')->name('admin.settlements.download');
     
     // Individual evaluations
     Route::GET('/individualus-vertinimas/{group}/{id}', 'EvaluationController@index')->name('admin.students.individual-evaluation');

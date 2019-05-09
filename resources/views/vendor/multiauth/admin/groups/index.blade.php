@@ -32,7 +32,13 @@
                                             @if($group->studies_form == 'Ištestinė')
                                                 <h5 class="mb-1">{{$group->program_name_ex}}</h5>
                                             @endif
-                                            <small>{{$group->studies_form}}</small>
+                                            <small>
+                                                @if($group->studies_form == "Ištestinė")
+                                                    Ištęstinė
+                                                @else
+                                                    {{$group->studies_form}}
+                                                @endif
+                                            </small>
                                         </div>
                                         <p class="mb-1">Grupė: {{$group->group_name}} Studentai: {{$group->students}}</p>
                                     </a>

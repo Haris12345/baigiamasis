@@ -41,19 +41,21 @@
                             <label for="date" class="col-md-4 col-form-label text-md-right">{{ __('Egzamino data') }}</label>
 
                             <div class="col-md-6">                                    
-                                <input value="{{$exam->date}}" class="form-control" type="text" name="date" placeholder="YYYY-MM-DD" required 
+                                <input value="{{$exam->date}}" class="form-control" type="text" name="date" placeholder="mmmm-mm-dd" required 
                                     pattern="(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))" 
-                                    title="Įveskite datą šiuo formatu: YYYY-MM-DD"/>
+                                    title="Įveskite datą šiuo formatu: mmmm-mm-dd"/>
                             </div>
                         </div>
 
                         <div class="form-group row">
                             <input type="hidden" name="student_id" value="{{$id}}">
-                            <label for="mark" class="col-md-4 col-form-label text-md-right">{{$student->name}} {{$student->last_name}}</label>
+                            <label for="mark" class="col-md-4 col-form-label text-md-right">Pažymys</label>
 
                             <div class="col-md-6">
                                 <select class="form-control" name="mark">
                                     <option selected value={{$exam->mark}}>{{$exam->mark}}</option>
+                                    <option value="Neatestuotas">Neatestuotas</option>
+                                    <option value="Neatvyko">Neatvyko</option>
                                     @for($i=1; $i<11; $i++)
                                         <option value={{$i}}>{{$i}}</option>
                                     @endfor

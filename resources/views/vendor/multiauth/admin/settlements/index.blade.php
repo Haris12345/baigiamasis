@@ -14,8 +14,11 @@
 
                     <div class="card-body">
                         @include('multiauth::message')
-                        {{-- <a href="" class="btn btn-primary">Suformuoti pažangumo suvestinę</a>
-                        <br></br> --}}
+                            <form method="post" action="{{route('admin.settlements.download', $group)}}">
+                                @csrf
+                                <button type="submit" class="btn btn-primary">Atsiųsti pažangumo suvestinę</button>
+                            </form>
+                            <br/>
                         <div id="app">
                             <table class="table table-responsive(xl)">
                                 <tr>
@@ -40,7 +43,7 @@
                                         <td>{{$subject->evaluation_type}}</td>
                                         <td>
                                             <div class="row">
-                                                <form action="{{route('admin.settlements.assignTeacher', [$subject->subject_code])}}" method="post">
+                                                <form action="{{route('admin.settlements.assignTeacher', [$subject->subject_code, $subject->semester])}}" method="post">
                                                     @csrf
                                                     <select name="teacher_id">
                                                         @if(!isset($subject->teacher_id))
@@ -67,7 +70,7 @@
                                             @if(isset($subject->teacher_id))
                                                 <?php $exam_occured = false; ?>
                                                 @foreach($exams as $exam)
-                                                    @if($exam->subject_code == $subject->subject_code)
+                                                    @if($exam->subject_code == $subject->subject_code && $subject->semester == $exam->semester)
                                                         <form action="{{route('admin.settlements.showRetention', [$group, $subject->subject_code])}}" method="get">
                                                             <input type="hidden" name="semester" value="{{$subject->semester}}">
                                                             <input type="hidden" name="credits" value="{{$subject->credits}}">
@@ -81,6 +84,7 @@
                                                 @endforeach  
                                                 @if($exam_occured == false)
                                                     <form action="{{route('admin.settlements.show', [$group, $subject->subject_code])}}" method="get">
+                                                        <input type="hidden" name="status" value="{{$subject->subject_status}}">
                                                         <input type="hidden" name="semester" value="{{$subject->semester}}">
                                                         <input type="hidden" name="credits" value="{{$subject->credits}}">
                                                         <input type="hidden" name="evaluation_type" value="{{$subject->evaluation_type}}">

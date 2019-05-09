@@ -27,7 +27,8 @@ class OverviewController extends Controller
             ->leftJoin('group_subjects', function($join){
                 $join->on('exams.subject_code', '=', 'group_subjects.subject_code');
                 $join->on('exams.group', '=', 'group_subjects.group');
-            })
+                $join->on('exams.semester', '=', 'group_subjects.semester');
+            })         
             ->where('exams.student_id', '=', $id)
             ->where('exams.group', '=', $student->group)
             ->get();

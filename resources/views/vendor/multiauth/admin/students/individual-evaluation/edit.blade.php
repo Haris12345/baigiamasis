@@ -12,6 +12,7 @@
                 </div>
                 
                 <div class="card-body">
+                    @include('multiauth::message')
                     <h3>Egzamino koregavimas studentui: {{$student->name}} {{$student->last_name}}</h3>
                     <p>Dalykas: {{$exam->subject_name}}</p>
                     <form method="POST" action="{{ route('admin.students.individual-evaluation.update', [$group, $id, $semester, $subject_code]) }}">
@@ -54,11 +55,19 @@
                             <div class="col-md-6">
                                 <select class="form-control" name="mark">
                                     <option selected value={{$exam->mark}}>{{$exam->mark}}</option>
-                                    <option value="Neatestuotas">Neatestuotas</option>
+                                    <option value="10 (puikiai)">10 (puikiai)</option>
+                                    <option value="9 (labai gerai)">9 (labai gerai)</option>
+                                    <option value="8 (gerai)">8 (gerai)</option>
+                                    <option value="7 (vidutiniškai)">7 (vidutiniškai)</option>
+                                    <option value="6 (patenkinamai)">6 (patenkinamai)</option>
+                                    <option value="5 (silpnai)">5 (silpnai)</option>
+                                    <option value="4 (nepatenkinamai)">4 (nepatenkinamai)</option>
+                                    <option value="3 (nepatenkinamai)">3 (nepatenkinamai)</option>
+                                    <option value="2 (nepatenkinamai)">2 (nepatenkinamai)</option>
+                                    <option value="1 (nepatenkinamai)">1 (nepatenkinamai)</option>
+                                    <option value=0>Nevertintas</option>
                                     <option value="Neatvyko">Neatvyko</option>
-                                    @for($i=1; $i<11; $i++)
-                                        <option value={{$i}}>{{$i}}</option>
-                                    @endfor
+                                    <option value="Neatestuotas">Neatestuotas</option>
                                 </select>
                             </div>
                         </div>

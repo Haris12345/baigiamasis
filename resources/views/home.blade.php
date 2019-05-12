@@ -24,7 +24,13 @@
                                                 @foreach($exams as $exam)
                                                     <div class="d-flex w-100 justify-content-between">
                                                         <h5>{{$exam->subject_name}}</h5>
-                                                        <h5>{{$exam->mark}}</h5>
+                                                        <h5>
+                                                            @if(substr($exam->mark, 0, 2) == "Ne")
+                                                                {{$exam->mark}}
+                                                            @else
+                                                                {{substr($exam->mark, 0, 2)}}
+                                                            @endif
+                                                        </h5>
                                                     </div>
                                                 @endforeach
                                             @else
@@ -32,7 +38,6 @@
                                             @endif
                                         </div>
                                             
-                                        </il>
                                         <center><a class="btn btn-primary" href="{{ route('overview') }}">Peržiūrėti visus atsiskaitymus</a></center>
                                         <br/>
                                     </div>

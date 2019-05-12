@@ -45,6 +45,7 @@
     
                                 <div class="col-md-6">
                                     <select  name="group" class="form-control" value="{{$student->group}}">
+                                        <option selected>{{$student->group}}</option>
                                         @foreach($group as $grp)
                                             <option>{{$grp->group_name}}</option>
                                         @endforeach

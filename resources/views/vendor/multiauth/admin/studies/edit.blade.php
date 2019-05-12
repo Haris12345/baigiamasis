@@ -93,21 +93,21 @@
                                                 <input type="hidden" name="subject[]" value="{{$study_plan->subject_name}}">
                                                 <td>{{$study_plan->subject_name}}</td>
                                                 <td><input style="width: 40px" type="number" name="credits[0]" value="{{$study_plan->credits_sem1}}"></td>
-                                                <td><input size="5" type="text" name="evaluation[0]" value="{{$study_plan->evaluation_type_sem1}}"></td>
+                                                <td><input size="4" type="text" name="evaluation[0]" value="{{$study_plan->evaluation_type_sem1}}"></td>
                                                 <td><input style="width: 40px" type="number" name="credits[1]" value="{{$study_plan->credits_sem2}}"></td>
-                                                <td><input size="5" type="text" name="evaluation[1]" value="{{$study_plan->evaluation_type_sem2}}"></td>
+                                                <td><input size="4" type="text" name="evaluation[1]" value="{{$study_plan->evaluation_type_sem2}}"></td>
                                                 <td><input style="width: 40px" type="number" name="credits[2]" value="{{$study_plan->credits_sem3}}"></td>
-                                                <td><input size="5" type="text" name="evaluation[2]" value="{{$study_plan->evaluation_type_sem3}}"></td>
+                                                <td><input size="4" type="text" name="evaluation[2]" value="{{$study_plan->evaluation_type_sem3}}"></td>
                                                 <td><input style="width: 40px" type="number" name="credits[3]" value="{{$study_plan->credits_sem4}}"></td>
-                                                <td><input size="5" type="text" name="evaluation[3]" value="{{$study_plan->evaluation_type_sem4}}"></td>
+                                                <td><input size="4" type="text" name="evaluation[3]" value="{{$study_plan->evaluation_type_sem4}}"></td>
                                                 <td><input style="width: 40px" type="number" name="credits[4]" value="{{$study_plan->credits_sem5}}"></td>
-                                                <td><input size="5" type="text" name="evaluation[4]" value="{{$study_plan->evaluation_type_sem5}}"></td>
+                                                <td><input size="4" type="text" name="evaluation[4]" value="{{$study_plan->evaluation_type_sem5}}"></td>
                                                 <td><input style="width: 40px" type="number" name="credits[5]" value="{{$study_plan->credits_sem6}}"></td>
-                                                <td><input size="5" type="text" name="evaluation[5]" value="{{$study_plan->evaluation_type_sem6}}"></td>
+                                                <td><input size="4" type="text" name="evaluation[5]" value="{{$study_plan->evaluation_type_sem6}}"></td>
                                                 <td><input style="width: 40px" type="number" name="credits[6]" value="{{$study_plan->credits_sem7}}"></td>
-                                                <td><input size="5" type="text" name="evaluation[6]" value="{{$study_plan->evaluation_type_sem7}}"></td>
+                                                <td><input size="4" type="text" name="evaluation[6]" value="{{$study_plan->evaluation_type_sem7}}"></td>
                                                 <td><input style="width: 40px" type="number" name="credits[7]" value="{{$study_plan->credits_sem8}}"></td>
-                                                <td><input size="5" type="text" name="evaluation[7]" value="{{$study_plan->evaluation_type_sem8}}"></td>
+                                                <td><input size="4" type="text" name="evaluation[7]" value="{{$study_plan->evaluation_type_sem8}}"></td>
                                                 <td>{{$study_plan->ECTS_credits}}</td>
                                             </tr>
                                         @endforeach

@@ -367,8 +367,13 @@ class StudyPlansController extends Controller
             ->where('studies_form', '=', $studies_form)
             ->delete();
         }
+
+        DB::table('groups')
+        ->where('studies_program_code', '=', $studies_program_code)
+        ->where('studies_form', '=', $studies_form)
+        ->delete();
         
-        return redirect('/admin/studies');
+        return redirect('/admin/studiju-planai');
     }
 
     public function downloadFt(){
@@ -430,68 +435,3 @@ class StudyPlansController extends Controller
         return view('multiauth::admin.studies.edit', ['id' => $studies_program_code, 'studies_form' => $studies_form, 'study_plans' => $results]);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- // public function index(){
-    //     $id = Study_programs::select('id')->first();
-    //     $studies = Study_programs::orderBy('updated_at', 'desc')->paginate(30);
-    //     return view('multiauth::admin.studies.index', compact('studies', 'id'));
-    // }
-
-    // public function new(){
-    //     return view('multiauth::admin.studies.new');
-    // }
-
-    // public function create(Request $request){
-    //     $request->validate([
-    //         'study_program' => 'required',
-    //         'study_form' => 'required',
-    //         'study_program_abrv' => 'required',
-    //     ]);
-
-    //     $input = request()->all();
-    //     $studies = Study_programs::create($input);
-
-    //     return back()->with('message', 'Studijų programa sukurta sėkmingai');
-    // }
-
-    // public function delete($id){
-    //     $studies = Study_programs::find($id);
-    //     $studies->delete();
-    //     $students = Students::where('study_program_id', '=', $id)->get();
-        
-    //     if ($students != null) {
-    //         return $ids = explode(",", $students);
-    //         $student = Students::whereIn('id', $ids)->delete();
-    //         return redirect('/admin/studies')->with('message', 'Studijų programa buvo pašalinta iš duomenų bazės');
-    //     }
-    //     return redirect('/admin/studies')->with('message', 'Studijų programa buvo pašalinta iš duomenų bazės');
-    // }

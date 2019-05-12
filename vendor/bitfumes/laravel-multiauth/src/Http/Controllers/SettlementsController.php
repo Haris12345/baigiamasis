@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use App\Exports\SummaryExport;
+use Illuminate\Support\Collection;
 
 class SettlementsController extends Controller
 {
@@ -72,6 +73,12 @@ class SettlementsController extends Controller
                 ->where('id', '=', $id)
                 ->where('group', '=', $group)
                 ->where('status', '=', 'Studijuoja')
+                ->orwhere('group', '=', $group)
+                ->where('id', '=', $id)
+                ->where('status', '=', 'Išvykęs į dalines studijas')
+                ->orwhere('group', '=', $group)
+                ->where('id', '=', $id)
+                ->where('status', '=', 'Pertrauktos studijos')
                 ->first();
                 if($student != NULL){
                     array_push($students, $student);
@@ -84,6 +91,10 @@ class SettlementsController extends Controller
             ->select('id', 'name', 'last_name', 'identity_code')
             ->where('group', '=', $group)
             ->where('status', '=', 'Studijuoja')
+            ->orwhere('group', '=', $group)
+            ->where('status', '=', 'Išvykęs į dalines studijas')
+            ->orwhere('group', '=', $group)
+            ->where('status', '=', 'Pertrauktos studijos')
             ->get();
         }
        
@@ -96,7 +107,7 @@ class SettlementsController extends Controller
         ->where('id', '=', $request->teacher_id)
         ->first();
 
-        if($request->teacher == NULL){
+        if($request->teacher_id == "Nepriskirtas"){
             return back()->with('error', 'Nepriskirtas joks dėstytojas');
         }
 
@@ -137,7 +148,9 @@ class SettlementsController extends Controller
             ]);
             $i++;
         }
-        return back()->with('message', 'Pažymiai įrašyti');
+        $group = $request->group;
+        
+        return redirect(route('admin.settlements', $group))->with('message', 'Pažymiai buvo įrašyti');
     }
 
     public function showRetention(Request $request, $group, $subject_code){
@@ -265,29 +278,38 @@ class SettlementsController extends Controller
         ->select('studies_program_code')
         ->where('group', '=', $group)
         ->first();
-
+            
         $studies_form = substr($group, -3, -2);
         if($studies_form == 'l'){
-            $max = DB::table('study_plans_full_time')
+            $studies_form = "Nuolatinė";
+            $not_assigned = DB::table('study_plans_full_time')
             ->select('subject_code')
             ->where('studies_program_code', '=', $code->studies_program_code)
             ->orderBy('subject_code', 'DESC')
             ->first();
         }
         if($studies_form == 'i'){
-            $max = DB::table('study_plans_extended')
+            $studies_form == "Ištestinė";
+            $not_assigned = DB::table('study_plans_extended')
             ->select('subject_code')
             ->where('studies_program_code', '=', $code->studies_program_code)
             ->orderBy('subject_code', 'DESC')
             ->first();
         }
+        $max = DB::table('group_subjects')
+        ->select('subject_code')
+        ->where('studies_program_code', '=', $code->studies_program_code)
+        ->where('studies_form', '=', $studies_form)
+        ->orderBy('subject_code', 'DESC')
+        ->first();
+
         $subjects = DB::table('group_subjects')
         ->where('subject_code', '=', NULL)
         ->where('group', '=', $group)
         ->get();
 
         $assigned_subjects = DB::table('group_subjects')
-        ->where('subject_code', '>', $max->subject_code)
+        ->where('subject_code', '>', $not_assigned->subject_code)
         ->where('group', '=', $group)
         ->get();
 
@@ -300,19 +322,15 @@ class SettlementsController extends Controller
             $studies_form_abrv = substr($request->group, -3, -2);
             if($studies_form_abrv == 'l'){
                 $studies_form = 'NUolatinė';
-                $max = DB::table('study_plans_full_time')
-                ->select('subject_code')
-                ->where('studies_program_code', '=', $request->studies_program_code)
-                ->orderBy('subject_code', 'DESC')
-                ->first();
             }
             if($studies_form_abrv == 'i'){
                 $studies_form = 'Ištestinė';
-                $max = DB::table('study_plans_extended')
-                ->where('studies_program_code', '=', $request->studies_program_code)
-                ->orderBy('subject_code', 'DESC')
-                ->first();
             }
+            $max = DB::table('group_subjects')
+            ->where('studies_program_code', '=', $request->studies_program_code)
+            ->orderBy('subject_code', 'DESC')
+            ->first();
+
             $students = json_encode($request->student, true);
             $group_abrv = substr($max->subject_code, 0, -2);
             $max = substr($max->subject_code, -2);
@@ -351,6 +369,35 @@ class SettlementsController extends Controller
     }
 
     public function update(Request $request){
+        // $admin = auth('admin')->user()->name;
+        // $student = DB::table('students')
+        // ->select('name', 'last_name')
+        // ->where('id', '=', $id)
+        // ->first();
+       
+        // DB::table('exams')
+        // ->where('student_id', '=', $id)
+        // ->where('subject_code', '=', $subject_code)
+        // ->where('semester', '=', $semester)
+        // ->update([
+        //     'teacher_id' => $request->teacher_id,
+        //     'mark' => $request->mark,
+        //     'comments' => $request->comments,
+        //     'evaluated_by' => $admin,
+        //     'date' => $request->date
+        // ]);
+
+        // $subjects = DB::table('exams')    
+        //     ->leftJoin('group_subjects', function($join){
+        //         $join->on('exams.subject_code', '=', 'group_subjects.subject_code');
+        //         $join->on('exams.group', '=', 'group_subjects.group');
+        //     })
+        //     ->where('group_subjects.semester', '=', $semester)
+        //     ->where('exams.student_id', '=', $id)
+        //     ->where('exams.group', '=', $group)
+        //     ->get();
+        
+        
         $admin = auth('admin')->user()->name;
         $IDs = $request->get('student_id');
         $i = 0;
@@ -369,7 +416,9 @@ class SettlementsController extends Controller
             ]);
             $i++;
         }
-        return back()->with('message', 'Pažymiai atnaujinti');
+        $group = $request->group;
+        
+        return redirect(route('admin.settlements', $group))->with('message', 'Pažymiai buvo įrašyti');
     }
 
     public function deleteSubject($subject, $group){
@@ -381,15 +430,73 @@ class SettlementsController extends Controller
         return back()->with('message', 'Dalykas buvo ištrintas');
     }
 
-    public function download($group){
-
-        $summary = DB::table('exams')
-        ->select('students.name', 'students.last_name', 'exams.subject_name', 'exams.mark')
-        ->leftJoin('students', 'exams.student_id', 'students.id')
-        ->where('exams.group', '=', $group)
+    public function summary($group){
+        $subjects = DB::table('group_subjects')
+        ->select('studies_program_code', 'semester', 'subject_code', 'group', 'credits', 'subject_name')
+        ->orderBy('semester')
+        ->where('group', '=', $group)
+        ->where('subject_code', '!=', NULL)
         ->get();
 
-        $summary = json_decode(json_encode($summary), true);
-        return (new SummaryExport($summary))->download("$group suvestinė.xlsx");
+        if(substr($subjects[0]->group, -3, -2) == 'l'){
+            $studies_form = 'Nuolatinė';
+            $studies_program_name = DB::table('study_plans_full_time')
+            ->select('studies_program_name')
+            ->where('studies_program_code', '=', $subjects[0]->studies_program_code)
+            ->where('studies_form', '=', $studies_form)
+            ->first();
+        }
+        if(substr($subjects[0]->group, -3, -2) == 'i'){
+            $studies_form = 'Ištestinė';
+            $studies_program_name = DB::table('study_plans_extended')
+            ->select('studies_program_name')
+            ->where('studies_program_code', '=', $subjects[0]->studies_program_code)
+            ->where('studies_form', '=', $studies_form)
+            ->first();
+        }
+
+        $students = DB::table('students')
+        ->select('id', 'name', 'last_name')
+        ->where('group', '=', $group)
+        ->groupBy('id')
+        ->get();
+        
+        $all_exams =  DB::table('exams')
+        ->select('mark', 'subject_code', 'semester', 'student_id')
+        ->where('group', '=', $group)
+        ->get();
+
+        $average = array();
+        foreach($students as $student){
+            $quantity = DB::table('exams')
+            ->where('group', '=', $group)
+            ->where('student_id', '=', $student->id)
+            ->count();
+
+            
+            $student_marks = 0;
+            foreach($subjects as $subject){
+                $student_mark = DB::table('exams')
+                ->select('mark')
+                ->where('group', '=', $group)
+                ->where('student_id', '=', $student->id)
+                ->where('semester', '=', $subject->semester)
+                ->where('subject_code', '=', $subject->subject_code)
+                ->first();
+
+                if(isset($student_mark->mark)){
+                    if(substr($student_mark->mark, 0, 2) != 'Ne'){
+                        $student_marks = (int)$student_marks + (int)substr($student_mark->mark, 0, 2) * (int)$subject->credits;
+                    }      
+                } 
+            }
+
+            if($quantity > 0){
+                $student_marks = round($student_marks / $quantity, 2);
+                array_push($average, $student_marks);
+            }          
+        }
+     
+        return view('multiauth::admin.settlements.summary', compact('studies_program_name', 'all_exams', 'subjects', 'exams', 'students', 'average'));
     }
 }

@@ -25,7 +25,7 @@
                                 <th>Įvertinimas</th>
                                 <th>Įvertino</th>
                             </tr>
-
+                            <?php $i = 0; ?>
                             @foreach ($subjects as $subject)
                                 <tr>
                                     <td>
@@ -36,13 +36,14 @@
                                         @endif
                                     </td>
                                     <td>{{$subject->semester}}</td>
-                                    <td>{{$subject->credits}}</td>
+                                    <td>{{$evaluation[$i]->credits}}</td>
                                     <td>{{$subject->settlement_type}}</td>
-                                    <td>{{$subject->teacher_name}} {{$subject->teacher_last_name}}</td>
+                                    <td>{{$evaluation[$i]->teacher_name}} {{$evaluation[$i]->teacher_last_name}}</td>
                                     <td>{{$subject->date}}</td>
                                     <td>{{$subject->mark}}</td>
                                     <td>{{$subject->evaluated_by}}</td>
                                 </tr>
+                                <?php $i++ ?>
                             @endforeach
                         </table>
                     </div>

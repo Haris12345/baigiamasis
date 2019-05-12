@@ -167,13 +167,18 @@ class GroupsController extends Controller
                 }
             }
         }
-        $students = DB::table('students')
+       
+        
+        $student = DB::table('students')
         ->select('id')
         ->where('group', '=', $request->group_name)
-        ->get();
+        ->first();
 
-        if(isset($students->id)){
-            $students = count($students->id);
+        if(isset($student->id)){
+            $students = DB::table('students')
+            ->select('id')
+            ->where('group', '=', $request->group_name)
+            ->count();
         }
         else{
             $students = 0;

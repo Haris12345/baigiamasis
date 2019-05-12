@@ -18,22 +18,24 @@ class OverviewController extends Controller
             return redirect(route('password'));
         }
         else{
+
             $id = Auth::id();
             $student = DB::table('students')
             ->where('id', '=', $id)
             ->first();
 
-            $subjects = DB::table('exams')    
-            ->leftJoin('group_subjects', function($join){
-                $join->on('exams.subject_code', '=', 'group_subjects.subject_code');
-                $join->on('exams.group', '=', 'group_subjects.group');
-                $join->on('exams.semester', '=', 'group_subjects.semester');
-            })         
-            ->where('exams.student_id', '=', $id)
-            ->where('exams.group', '=', $student->group)
+            $subjects = DB::table('exams')
+            ->where('student_id', '=', $id)
+            ->where('group', '=', $student->group)
+            ->orderBy('semester')
             ->get();
 
-            return view('overview.index', compact('id', 'student', 'subjects'));
+            $evaluation = DB::table('group_subjects')
+            ->where('group', '=', $student->group)
+            ->orderBy('semester')
+            ->get();
+
+            return view('overview.index', compact('id', 'student', 'subjects', 'evaluation'));
         }
     }
 }

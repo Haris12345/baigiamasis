@@ -39,13 +39,20 @@
                                     <td>{{$subject->evaluation_type}}</td>
                                     <td>{{$subject->teacher_name}} {{$subject->teacher_last_name}}</td>
                                     <td>{{$subject->date}}</td>
-                                    <td>{{$subject->mark}}</td>
+                                    <td>
+                                        @if(substr($subject->mark, 0, 2) == "Ne")
+                                            {{$subject->mark}}
+                                        @else
+                                            {{substr($subject->mark, 0, 2)}}</td>
+                                        @endif
                                     <td>{{$subject->comments}}</td>
                                     <td>
+                                        <span style="white-space: nowrap">
                                         <a href="{{route('admin.students.individual-evaluation.edit', [$group, $id, $semester, $subject->subject_code])}}" class="btn btn-sm btn-primary">Keisti</a>
                                         @if($subject->comments == 'skola' || $subject->comments == 'Skola')
                                             <a href="{{route('admin.students.individual-evaluation.debt', [$group, $id, $semester, $subject->subject_code])}}" class="btn btn-sm btn-primary">Skola</a>
                                         @endif
+                                        </span>
                                     </td>
                                 </tr>                                      
                             @endforeach

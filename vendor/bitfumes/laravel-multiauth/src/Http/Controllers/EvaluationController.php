@@ -127,6 +127,7 @@ class EvaluationController extends Controller
         ->where('group', '=', $group)
         ->where('student_id', '=', $id)
         ->where('subject_code', '=', $subject_code)
+        ->where('semester', '=', $semester)
         ->first();
 
         return view('multiauth::admin.students.individual-evaluation.edit', compact('exam', 'group', 'id', 'semester', 'subject_code', 'student', 'teachers'));
@@ -161,7 +162,7 @@ class EvaluationController extends Controller
             ->where('exams.group', '=', $group)
             ->get();
 
-        return view('multiauth::admin.students.individual-evaluation.semester', compact('subjects', 'student', 'group', 'id', 'semester', 'subject_code'))->with('message', 'Pažymys buvo pakeistas');
+        return back()->with('message', 'Pažymys buvo pakeistas');
     }
 
     public function debt($group, $id, $semester, $subject_code){
@@ -174,8 +175,9 @@ class EvaluationController extends Controller
         ->where('group', '=', $group)
         ->where('student_id', '=', $id)
         ->where('subject_code', '=', $subject_code)
+        ->where('semester', '=', $semester)
         ->first();
-        
+
         return view('multiauth::admin.students.individual-evaluation.debt', compact('group', 'id', 'semester', 'subject_code', 'student', 'exam'));
     }
 
@@ -184,6 +186,7 @@ class EvaluationController extends Controller
         ->where('student_id', '=', $request->student_id)
         ->where('group', '=', $request->group)
         ->where('subject_code', '=', $request->subject_code)
+        ->where('semester', '=', $request->semester)
         ->update([
             'debt_price' => $request->sum,
             'debt_paid' => $request->paid

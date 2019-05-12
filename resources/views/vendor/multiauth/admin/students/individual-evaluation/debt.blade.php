@@ -40,6 +40,7 @@
                             <label for="comments" class="col-md-4 col-form-label text-md-right">Skolos suma (Eurais)</label>
                             <div class="col-md-6">
                                 <input type="number" class="form-control" name="sum">
+                                <input type="hidden" class="form-control" name="semester" value="{{$semester}}">
                                 <input type="hidden" class="form-control" name="group" value="{{$group}}">
                                 <input type="hidden" class="form-control" name="subject_code" value="{{$subject_code}}">
                                 <input type="hidden" class="form-control" name="student_id" value="{{$student->id}}">

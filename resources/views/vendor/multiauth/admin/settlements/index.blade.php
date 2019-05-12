@@ -14,9 +14,9 @@
 
                     <div class="card-body">
                         @include('multiauth::message')
-                            <form method="post" action="{{route('admin.settlements.download', $group)}}">
+                            <form method="post" action="{{route('admin.settlements.summary', $group)}}" target="_blank">
                                 @csrf
-                                <button type="submit" class="btn btn-primary">Atsiųsti pažangumo suvestinę</button>
+                                <button type="submit" class="btn btn-primary">Pažangumo suvestinė</button>
                             </form>
                             <br/>
                         <div id="app">

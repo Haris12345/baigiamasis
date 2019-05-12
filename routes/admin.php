@@ -97,7 +97,7 @@
     Route::POST('/atsiskaitymai/priskirti-dalyka/naujinti', 'SettlementsController@updateSubject')->name('admin.settlements.assignSubject.update');
     Route::GET('/atsiskaitymai/priskirti-dalyka/trinti/{subject}/{group}', 'SettlementsController@deleteSubject')->name('admin.settlements.assignSubject.delete');
     Route::POST('/atsiskaitymai/naujinti', 'SettlementsController@update')->name('admin.settlements.update');
-    Route::POST('/atsiskaitymai/suvestine/atsiusti/{group}', 'SettlementsController@download')->name('admin.settlements.download');
+    Route::POST('/atsiskaitymai/suvestine/suvestine/{group}', 'SettlementsController@summary')->name('admin.settlements.summary');
     
     // Individual evaluations
     Route::GET('/individualus-vertinimas/{group}/{id}', 'EvaluationController@index')->name('admin.students.individual-evaluation');

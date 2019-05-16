@@ -15,7 +15,7 @@
             @foreach($subjects as $subject)
                 <td><span>{{$subject->subject_name}}</span></td>
             @endforeach
-            <td><span><b>Slenkstinis vidurkis</b></span></td>
+            <td><span><b>Svertinis vidurkis</b></span></td>
         </tr>
         <tr>
             <td></td>

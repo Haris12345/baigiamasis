@@ -475,6 +475,7 @@ class SettlementsController extends Controller
 
             
             $student_marks = 0;
+            $credits = 0;
             foreach($subjects as $subject){
                 $student_mark = DB::table('exams')
                 ->select('mark')
@@ -487,12 +488,13 @@ class SettlementsController extends Controller
                 if(isset($student_mark->mark)){
                     if(substr($student_mark->mark, 0, 2) != 'Ne'){
                         $student_marks = (int)$student_marks + (int)substr($student_mark->mark, 0, 2) * (int)$subject->credits;
+                        $credits = $credits + (int)$subject->credits;
                     }      
                 } 
             }
 
             if($quantity > 0){
-                $student_marks = round($student_marks / $quantity, 2);
+                $student_marks = round($student_marks / $credits, 2);
                 array_push($average, $student_marks);
             }          
         }
